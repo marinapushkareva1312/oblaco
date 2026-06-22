@@ -2,9 +2,12 @@
 
 import { useState } from "react"
 import { ArrowLeft, Heart, Share2, MapPin, Clock, MessageCircle, Shield } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function ListingDetail() {
   const [saved, setSaved] = useState(false)
+  const router = useRouter()
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-24">
@@ -14,7 +17,10 @@ export default function ListingDetail() {
         className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
-        <button className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+        <button
+          onClick={() => router.back()}
+          className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+        >
           <ArrowLeft className="w-5 h-5 text-white" />
         </button>
         <span className="text-white font-bold text-lg">Listing</span>
@@ -105,13 +111,15 @@ export default function ListingDetail() {
 
       {/* Bottom Chat Button */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100">
-        <button
-          className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
-          style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-        >
-          <MessageCircle className="w-5 h-5" />
-          Chat with Seller
-        </button>
+        <Link href="/chat">
+          <button
+            className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
+            style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
+          >
+            <MessageCircle className="w-5 h-5" />
+            Chat with Seller
+          </button>
+        </Link>
       </div>
 
     </div>

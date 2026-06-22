@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { ArrowLeft, Send, Mic, Globe } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 type Message = {
   id: string
@@ -39,6 +40,7 @@ export default function ChatPage() {
   const [input, setInput] = useState("")
   const [translateAll, setTranslateAll] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -72,7 +74,10 @@ export default function ChatPage() {
         className="px-4 pt-12 pb-4 flex items-center gap-3 rounded-b-3xl shadow-lg"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
-        <button className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+        <button
+          onClick={() => router.back()}
+          className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0"
+        >
           <ArrowLeft className="w-5 h-5 text-white" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
@@ -82,7 +87,6 @@ export default function ChatPage() {
           <p className="text-white font-bold text-sm">Anna K.</p>
           <p className="text-white/60 text-xs">IKEA desk & chair · ₩45,000</p>
         </div>
-        {/* Translate toggle */}
         <button
           onClick={() => setTranslateAll(!translateAll)}
           className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
@@ -110,7 +114,6 @@ export default function ChatPage() {
             >
               <p className="text-sm leading-relaxed">{msg.text}</p>
 
-              {/* Translation */}
               {msg.translated && translateAll && (
                 <div className={`mt-2 pt-2 border-t ${msg.sender === "me" ? "border-white/20" : "border-gray-100"}`}>
                   <p className={`text-xs leading-relaxed ${msg.sender === "me" ? "text-white/70" : "text-gray-400"}`}>
@@ -119,7 +122,6 @@ export default function ChatPage() {
                 </div>
               )}
 
-              {/* Show translation button if not auto-translate */}
               {msg.translated && !translateAll && (
                 <button
                   onClick={() => toggleTranslation(msg.id)}

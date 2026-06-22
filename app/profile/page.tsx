@@ -2,9 +2,11 @@
 
 import { useState } from "react"
 import { Settings, Star, Package, Heart, Globe, ChevronRight, LogOut, Shield, Bell } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function ProfilePage() {
   const [language, setLanguage] = useState("en")
+  const router = useRouter()
 
   const languages = [
     { code: "en", flag: "🇬🇧", label: "English" },
@@ -21,11 +23,11 @@ export default function ProfilePage() {
   ]
 
   const menuItems = [
-    { icon: Package, label: "My Listings", sublabel: "12 active" },
-    { icon: Heart, label: "Saved Items", sublabel: "24 items" },
-    { icon: Bell, label: "Notifications", sublabel: "All enabled" },
-    { icon: Shield, label: "Privacy & Safety", sublabel: "" },
-    { icon: Settings, label: "Settings", sublabel: "" },
+    { icon: Package, label: "My Listings", sublabel: "12 active", href: "/" },
+    { icon: Heart, label: "Saved Items", sublabel: "24 items", href: "/" },
+    { icon: Bell, label: "Notifications", sublabel: "All enabled", href: "/" },
+    { icon: Shield, label: "Privacy & Safety", sublabel: "", href: "/" },
+    { icon: Settings, label: "Settings", sublabel: "", href: "/" },
   ]
 
   return (
@@ -36,29 +38,24 @@ export default function ProfilePage() {
         className="px-4 pt-12 pb-8 flex flex-col items-center rounded-b-3xl shadow-lg"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
-        {/* Settings button */}
         <div className="w-full flex justify-end mb-4">
           <button className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
             <Settings className="w-4 h-4 text-white" />
           </button>
         </div>
 
-        {/* Avatar */}
         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-white font-black text-3xl mb-3 shadow-lg">
           M
         </div>
 
-        {/* Name and info */}
         <h1 className="text-white font-bold text-xl">Marina P.</h1>
         <p className="text-white/60 text-xs mt-1">📍 Haeundae, Busan · Member since 2025</p>
 
-        {/* Verified badge */}
         <div className="mt-2 flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
           <Shield className="w-3 h-3 text-green-300" />
           <span className="text-green-300 text-xs font-semibold">Verified member</span>
         </div>
 
-        {/* Stats */}
         <div className="mt-5 w-full grid grid-cols-3 gap-2">
           {stats.map((stat) => (
             <div key={stat.label} className="bg-white/20 rounded-2xl py-3 flex flex-col items-center">
@@ -98,6 +95,7 @@ export default function ProfilePage() {
         {menuItems.map((item, index) => (
           <button
             key={item.label}
+            onClick={() => router.push(item.href)}
             className={`w-full flex items-center gap-3 px-4 py-4 hover:bg-[#F0F7FF] transition-all ${
               index < menuItems.length - 1 ? "border-b border-gray-50" : ""
             }`}
@@ -118,7 +116,10 @@ export default function ProfilePage() {
 
       {/* Logout */}
       <div className="mx-4 mt-3 mb-4">
-        <button className="w-full bg-white rounded-2xl py-4 flex items-center justify-center gap-2 shadow-sm">
+        <button
+          onClick={() => router.push("/auth")}
+          className="w-full bg-white rounded-2xl py-4 flex items-center justify-center gap-2 shadow-sm"
+        >
           <LogOut className="w-4 h-4 text-red-400" />
           <span className="text-sm font-semibold text-red-400">Sign Out</span>
         </button>
