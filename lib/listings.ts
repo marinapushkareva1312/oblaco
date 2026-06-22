@@ -1,3 +1,5 @@
+import { supabase } from './supabase'
+
 export type Listing = {
   id: string
   title: string
@@ -21,6 +23,7 @@ export const categories = [
   { id: "photo", label: "Photo", emoji: "📷" },
 ]
 
+// Static listings as fallback
 export const listings: Listing[] = [
   {
     id: "1",
@@ -97,3 +100,27 @@ export const listings: Listing[] = [
     category: "bikes",
   },
 ]
+
+// Fetch listings from Supabase
+export async function fetchListings(): Promise<Listing[]> {
+  const { data, error } = await supabase
+    .from('listings')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error || !data || data.length === 0) {
+    console.error('Supabase error:', error)
+    return listings // fallback to static data
+  }
+
+  return data.map((item) => ({
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    location: item.location,
+    postedAt: new Date(item.created_at).toLocaleDateString(),
+    image: item.image_url || '/listings/sofa.png',
+    category: item.category,
+    featured: item.featured,
+  }))
+}

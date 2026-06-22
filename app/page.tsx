@@ -1,23 +1,41 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { MarketplaceHeader } from "@/components/marketplace-header"
 import { CategoryScroll } from "@/components/category-scroll"
 import { ListingCard } from "@/components/listing-card"
 import { BottomNav } from "@/components/bottom-nav"
-import { listings } from "@/lib/listings"
+import { listings as staticListings, fetchListings } from "@/lib/listings"
+import type { Listing } from "@/lib/listings"
 
 export default function Page() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [activeNav, setActiveNav] = useState("home")
   const [favorites, setFavorites] = useState<string[]>(["1"])
+  const [allListings, setAllListings] = useState<Listing[]>(staticListings)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadListings = async () => {
+      try {
+        const data = await fetchListings()
+        setAllListings(data)
+      } catch (error) {
+        console.error('Error loading listings:', error)
+        setAllListings(staticListings)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadListings()
+  }, [])
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]))
   }
 
   const visibleListings = useMemo(() => {
-    let list = listings
+    let list = allListings
     if (activeCategory !== "all") {
       list = list.filter((l) => l.category === activeCategory)
     }
@@ -25,7 +43,7 @@ export default function Page() {
       list = list.filter((l) => favorites.includes(l.id))
     }
     return list
-  }, [activeCategory, activeNav, favorites])
+  }, [activeCategory, activeNav, favorites, allListings])
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-background pb-24">
@@ -38,10 +56,17 @@ export default function Page() {
           <h2 className="text-lg font-bold text-foreground">
             {activeNav === "saved" ? "Saved items" : "Recent listings"}
           </h2>
-          <span className="text-xs font-medium text-muted-foreground">{visibleListings.length} results</span>
+          <span className="text-xs font-medium text-muted-foreground">
+            {loading ? "Loading..." : `${visibleListings.length} results`}
+          </span>
         </div>
 
-        {visibleListings.length > 0 ? (
+        {loading ? (
+          <div className="mt-16 flex flex-col items-center text-center">
+            <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin mb-3" />
+            <p className="text-sm text-muted-foreground">Loading listings...</p>
+          </div>
+        ) : visibleListings.length > 0 ? (
           <div className="mt-4 grid grid-cols-2 gap-4">
             {visibleListings.map((listing) => (
               <ListingCard
