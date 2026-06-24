@@ -12,6 +12,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
   const [language, setLanguage] = useState("en")
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const languages = [
@@ -23,14 +24,37 @@ export default function AuthPage() {
   ]
 
   const handleGoogleLogin = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${window.location.origin}/`
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/`
+      }
+    })
+    if (error) console.error(error)
+  }
+
+  const handleEmailLogin = async () => {
+    if (!email || !password) return
+    setLoading(true)
+    if (isLogin) {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) {
+        console.error(error)
+        alert(error.message)
+      } else {
+        router.push("/")
+      }
+    } else {
+      const { error } = await supabase.auth.signUp({ email, password })
+      if (error) {
+        console.error(error)
+        alert(error.message)
+      } else {
+        alert("Check your email to confirm your account!")
+      }
     }
-  })
-  if (error) console.error(error)
-}
+    setLoading(false)
+  }
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] flex flex-col">
@@ -43,7 +67,6 @@ export default function AuthPage() {
         <p className="text-white/60 text-xs mb-1">Your home under the same sky</p>
         <span className="text-white font-black text-3xl tracking-widest">OBLACO</span>
 
-        {/* Toggle Login/Register */}
         <div className="mt-8 bg-white/20 rounded-2xl p-1 flex w-full">
           <button
             onClick={() => setIsLogin(true)}
@@ -158,14 +181,12 @@ export default function AuthPage() {
             <span className="text-xs font-semibold text-gray-600">Google</span>
           </button>
           <button
-            onClick={handleSubmit}
             className="flex-1 bg-white rounded-2xl py-3 flex items-center justify-center gap-1.5 shadow-sm"
           >
             <span className="text-base">🍎</span>
             <span className="text-xs font-semibold text-gray-600">Apple</span>
           </button>
           <button
-            onClick={handleSubmit}
             className="flex-1 bg-[#1877F2] rounded-2xl py-3 flex items-center justify-center gap-1.5 shadow-sm"
           >
             <span className="text-base text-white font-bold">f</span>
@@ -187,11 +208,12 @@ export default function AuthPage() {
       {/* Bottom Button */}
       <div className="px-4 pb-10 pt-4">
         <button
-          onClick={handleSubmit}
+          onClick={handleEmailLogin}
+          disabled={loading}
           className="w-full py-4 rounded-2xl flex items-center justify-center text-white font-bold text-base shadow-lg"
           style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
         >
-          {isLogin ? "Sign In" : "Create Account"}
+          {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
         </button>
       </div>
 
