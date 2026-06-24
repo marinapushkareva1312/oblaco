@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Mail, Lock, User, Eye, EyeOff, Globe } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -21,9 +22,15 @@ export default function AuthPage() {
     { code: "vi", label: "Tiếng Việt", flag: "🇻🇳" },
   ]
 
-  const handleSubmit = () => {
-    router.push("/")
-  }
+  const handleGoogleLogin = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/`
+    }
+  })
+  if (error) console.error(error)
+}
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] flex flex-col">
@@ -144,7 +151,7 @@ export default function AuthPage() {
 
         <div className="flex gap-2">
           <button
-            onClick={handleSubmit}
+            onClick={handleGoogleLogin}
             className="flex-1 bg-white rounded-2xl py-3 flex items-center justify-center gap-1.5 shadow-sm"
           >
             <span className="text-base">G</span>
