@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ArrowLeft, Camera, Mic, Sparkles, MapPin, Tag } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 export default function PostListing() {
   const [title, setTitle] = useState("")
@@ -11,6 +12,8 @@ export default function PostListing() {
   const [category, setCategory] = useState("")
   const [location, setLocation] = useState("")
   const [aiLoading, setAiLoading] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
   const router = useRouter()
 
   const generateAIDescription = async () => {
@@ -33,10 +36,65 @@ export default function PostListing() {
     { id: "other", label: "Other", emoji: "📦" },
   ]
 
+  const handleSubmit = async () => {
+    setErrorMsg("")
+
+    if (!title.trim()) {
+      setErrorMsg("Please enter a title")
+      return
+    }
+    if (!category) {
+      setErrorMsg("Please select a category")
+      return
+    }
+
+    setSubmitting(true)
+
+    const { data: userData } = await supabase.auth.getUser()
+
+    if (!userData?.user) {
+      setErrorMsg("Please sign in to post a listing")
+      setSubmitting(false)
+      return
+    }
+
+    const { data: inserted, error } = await supabase
+      .from("listings")
+      .insert({
+        title: title.trim(),
+        price: price ? `₩${price}` : "Free",
+        description: description.trim(),
+        location: location.trim(),
+        category,
+        user_id: userData.user.id,
+      })
+      .select()
+      .single()
+
+    if (error || !inserted) {
+      console.error("Ошибка создания объявления:", error)
+      setErrorMsg("Something went wrong. Please try again.")
+      setSubmitting(false)
+      return
+    }
+
+    fetch("/api/generate-embedding", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: inserted.id,
+        title: inserted.title,
+        description: inserted.description,
+      }),
+    }).catch((err) => console.error("Ошибка фоновой генерации embedding:", err))
+
+    setSubmitting(false)
+    router.push("/")
+  }
+
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-32">
 
-      {/* Header */}
       <div
         className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
@@ -53,7 +111,6 @@ export default function PostListing() {
 
       <div className="px-4 pt-4 space-y-3">
 
-        {/* Photo upload */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <p className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">Photos</p>
           <div className="flex gap-3">
@@ -68,7 +125,6 @@ export default function PostListing() {
           </div>
         </div>
 
-        {/* Title */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Title</p>
           <input
@@ -80,7 +136,6 @@ export default function PostListing() {
           />
         </div>
 
-        {/* Category */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <p className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">Category</p>
           <div className="grid grid-cols-3 gap-2">
@@ -101,7 +156,6 @@ export default function PostListing() {
           </div>
         </div>
 
-        {/* Price */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Price</p>
           <div className="flex items-center gap-2">
@@ -114,13 +168,16 @@ export default function PostListing() {
               onChange={(e) => setPrice(e.target.value)}
               className="flex-1 text-sm text-[#1A1A2A] placeholder-gray-300 outline-none font-semibold"
             />
-            <button className="text-xs text-gray-400 bg-[#F0F7FF] px-3 py-1 rounded-full">
+            <button
+              type="button"
+              onClick={() => setPrice("")}
+              className="text-xs text-gray-400 bg-[#F0F7FF] px-3 py-1 rounded-full"
+            >
               Free
             </button>
           </div>
         </div>
 
-        {/* Location */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Location</p>
           <div className="flex items-center gap-2">
@@ -135,7 +192,6 @@ export default function PostListing() {
           </div>
         </div>
 
-        {/* AI Description */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Description</p>
@@ -170,7 +226,6 @@ export default function PostListing() {
           />
         </div>
 
-        {/* Voice input hint */}
         <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-2xl p-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#2563EB] flex items-center justify-center flex-shrink-0">
             <Mic className="w-5 h-5 text-white" />
@@ -181,16 +236,22 @@ export default function PostListing() {
           </div>
         </div>
 
+        {errorMsg && (
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-3 text-sm text-red-600 text-center">
+            {errorMsg}
+          </div>
+        )}
+
       </div>
 
-      {/* Bottom Post Button */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100">
         <button
-          onClick={() => router.push("/")}
-          className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
+          onClick={handleSubmit}
+          disabled={submitting}
+          className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg disabled:opacity-60"
           style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
         >
-          Post Listing
+          {submitting ? "Posting..." : "Post Listing"}
         </button>
       </div>
 
