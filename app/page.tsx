@@ -7,6 +7,7 @@ import { ListingCard } from "@/components/listing-card"
 import { BottomNav } from "@/components/bottom-nav"
 import { listings as staticListings, fetchListings } from "@/lib/listings"
 import type { Listing } from "@/lib/listings"
+import { searchListings } from "@/lib/embeddings"
 
 export default function Page() {
   const [activeCategory, setActiveCategory] = useState("all")
@@ -14,6 +15,9 @@ export default function Page() {
   const [favorites, setFavorites] = useState<string[]>(["1"])
   const [allListings, setAllListings] = useState<Listing[]>(staticListings)
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [searchResults, setSearchResults] = useState<Listing[] | null>(null)
+  const [searching, setSearching] = useState(false)
 
   useEffect(() => {
     const loadListings = async () => {
@@ -30,11 +34,31 @@ export default function Page() {
     loadListings()
   }, [])
 
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults(null)
+      return
+    }
+
+    const timeout = setTimeout(async () => {
+      setSearching(true)
+      const results = await searchListings(searchQuery)
+      setSearchResults(results)
+      setSearching(false)
+    }, 500)
+
+    return () => clearTimeout(timeout)
+  }, [searchQuery])
+
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]))
   }
 
   const visibleListings = useMemo(() => {
+    if (searchResults !== null) {
+      return searchResults
+    }
+
     let list = allListings
     if (activeCategory !== "all") {
       list = list.filter((l) => l.category === activeCategory)
@@ -43,28 +67,34 @@ export default function Page() {
       list = list.filter((l) => favorites.includes(l.id))
     }
     return list
-  }, [activeCategory, activeNav, favorites, allListings])
+  }, [activeCategory, activeNav, favorites, allListings, searchResults])
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-background pb-24">
-      <MarketplaceHeader />
+      <MarketplaceHeader searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       <div className="px-5 pt-5">
         <CategoryScroll active={activeCategory} onSelect={setActiveCategory} />
 
         <div className="mt-6 flex items-center justify-between">
           <h2 className="text-lg font-bold text-foreground">
-            {activeNav === "saved" ? "Saved items" : "Recent listings"}
+            {searchResults !== null
+              ? "Search results"
+              : activeNav === "saved"
+              ? "Saved items"
+              : "Recent listings"}
           </h2>
           <span className="text-xs font-medium text-muted-foreground">
-            {loading ? "Loading..." : `${visibleListings.length} results`}
+            {loading || searching ? "Loading..." : `${visibleListings.length} results`}
           </span>
         </div>
 
-        {loading ? (
+        {loading || searching ? (
           <div className="mt-16 flex flex-col items-center text-center">
             <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin mb-3" />
-            <p className="text-sm text-muted-foreground">Loading listings...</p>
+            <p className="text-sm text-muted-foreground">
+              {searching ? "Searching..." : "Loading listings..."}
+            </p>
           </div>
         ) : visibleListings.length > 0 ? (
           <div className="mt-4 grid grid-cols-2 gap-4">
@@ -81,7 +111,11 @@ export default function Page() {
           <div className="mt-16 flex flex-col items-center text-center">
             <p className="text-sm font-medium text-foreground">No listings here yet</p>
             <p className="mt-1 text-xs text-muted-foreground text-pretty">
-              {activeNav === "saved" ? "Tap the heart on a listing to save it." : "Try a different category."}
+              {searchResults !== null
+                ? "Try a different search term."
+                : activeNav === "saved"
+                ? "Tap the heart on a listing to save it."
+                : "Try a different category."}
             </p>
           </div>
         )}

@@ -119,7 +119,7 @@ export async function fetchListings(): Promise<Listing[]> {
     price: item.price,
     location: item.location,
     postedAt: new Date(item.created_at).toLocaleDateString(),
-    image: item.image_url || '/listings/sofa.png',
+    image: item.image || '/listings/sofa.png',
     category: item.category,
     featured: item.featured,
   }))

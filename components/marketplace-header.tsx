@@ -2,7 +2,12 @@
 
 import { Search, SlidersHorizontal, Bell } from "lucide-react"
 
-export function MarketplaceHeader() {
+interface MarketplaceHeaderProps {
+  searchQuery: string
+  onSearchChange: (value: string) => void
+}
+
+export function MarketplaceHeader({ searchQuery, onSearchChange }: MarketplaceHeaderProps) {
   return (
     <header
       className="rounded-b-3xl px-5 pb-6 pt-7 text-white shadow-lg"
@@ -30,6 +35,8 @@ export function MarketplaceHeader() {
             type="search"
             placeholder="Search marketplace"
             aria-label="Search marketplace"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
             className="w-full bg-transparent text-sm text-white placeholder:text-white/60 focus:outline-none"
           />
         </div>
