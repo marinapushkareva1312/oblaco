@@ -67,11 +67,10 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] flex flex-col">
+    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] flex flex-col md:max-w-3xl md:my-6 md:min-h-[85vh] md:rounded-3xl md:shadow-xl md:overflow-hidden">
 
-      {/* Header */}
       <div
-        className="px-4 pt-12 pb-4 flex items-center gap-3 rounded-b-3xl shadow-lg"
+        className="px-4 pt-12 pb-4 flex items-center gap-3 rounded-b-3xl shadow-lg md:rounded-none md:pt-6"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
         <button
@@ -98,8 +97,7 @@ export default function ChatPage() {
         </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 px-4 py-4 space-y-3 overflow-y-auto">
+      <div className="flex-1 px-4 py-4 space-y-3 overflow-y-auto md:px-8">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -142,8 +140,7 @@ export default function ChatPage() {
         <div ref={bottomRef} />
       </div>
 
-      {/* Input */}
-      <div className="px-4 pb-8 pt-2 bg-white border-t border-gray-100">
+      <div className="px-4 pb-8 pt-2 bg-white border-t border-gray-100 md:px-8 md:pb-4">
         <div className="flex items-center gap-2">
           <button className="w-10 h-10 rounded-full bg-[#F0F7FF] flex items-center justify-center flex-shrink-0">
             <Mic className="w-5 h-5 text-[#2563EB]" />

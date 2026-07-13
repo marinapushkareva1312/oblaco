@@ -13,7 +13,7 @@ type ListingCardProps = {
 
 export function ListingCard({ listing, isFavorite, onToggleFavorite }: ListingCardProps) {
   return (
-    <Link href="/listing">
+    <Link href={`/${listing.id}`}>
       <article className="group overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border/60 transition-all duration-200 active:scale-[0.98] hover:shadow-lg hover:shadow-primary/10">
         {/* Photo — ~60% of card height */}
         <div className="relative aspect-[4/5]">
