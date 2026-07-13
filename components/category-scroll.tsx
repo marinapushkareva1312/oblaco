@@ -10,8 +10,8 @@ type CategoryScrollProps = {
 
 export function CategoryScroll({ active, onSelect }: CategoryScrollProps) {
   return (
-    <div className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <div className="flex w-max gap-4 py-1">
+    <div className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:overflow-visible md:px-0">
+      <div className="flex w-max gap-4 py-1 md:w-full md:flex-wrap md:justify-center">
         {categories.map((cat) => {
           const isActive = active === cat.id
           return (

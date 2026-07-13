@@ -70,8 +70,14 @@ export default function Page() {
   }, [activeCategory, activeNav, favorites, allListings, searchResults])
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-background pb-24">
-      <MarketplaceHeader searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+    <div className="mx-auto min-h-screen max-w-md bg-background pb-24 md:max-w-6xl md:pb-10">
+      <MarketplaceHeader
+  searchQuery={searchQuery}
+  onSearchChange={setSearchQuery}
+  activeNav={activeNav}
+  onNavSelect={setActiveNav}
+  favoritesCount={favorites.length}
+/>
 
       <div className="px-5 pt-5">
         <CategoryScroll active={activeCategory} onSelect={setActiveCategory} />
@@ -97,7 +103,7 @@ export default function Page() {
             </p>
           </div>
         ) : visibleListings.length > 0 ? (
-          <div className="mt-4 grid grid-cols-2 gap-4">
+          <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
             {visibleListings.map((listing) => (
               <ListingCard
                 key={listing.id}

@@ -19,7 +19,7 @@ type BottomNavProps = {
 
 export function BottomNav({ active, onSelect, favoritesCount }: BottomNavProps) {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md">
+    <nav className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md md:hidden">
       <div className="relative border-t border-border/60 bg-card/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-4px_24px_rgba(0,0,0,0.06)] backdrop-blur-md">
         {/* Floating Sell button */}
         <Link href="/post">
