@@ -36,8 +36,8 @@ export function MarketplaceHeader({
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
         <div className="flex items-center gap-10">
           <div>
-            <p className="hidden text-xs font-medium text-white/70 md:block">{t("tagline")}</p>
-            <h1 className="text-2xl font-black tracking-widest text-white drop-shadow-lg md:text-xl">{t("appName")}</h1>
+            <p className="hidden text-xs font-medium text-white/70 md:block">Your home under the same sky</p>
+            <h1 className="text-2xl font-black tracking-widest text-white drop-shadow-lg md:text-xl">OBLACO</h1>
           </div>
 
           {/* Desktop nav */}

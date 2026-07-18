@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { categories } from "@/lib/listings"
+import { useLanguage } from "@/lib/language-context"
 
 type CategoryScrollProps = {
   active: string
@@ -9,6 +10,7 @@ type CategoryScrollProps = {
 }
 
 export function CategoryScroll({ active, onSelect }: CategoryScrollProps) {
+  const { t } = useLanguage()
   return (
     <div className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:overflow-visible md:px-0">
       <div className="flex w-max gap-4 py-1 md:w-full md:flex-wrap md:justify-center">
@@ -37,7 +39,7 @@ export function CategoryScroll({ active, onSelect }: CategoryScrollProps) {
                   isActive ? "text-primary" : "text-muted-foreground",
                 )}
               >
-                {cat.label}
+                {t(cat.labelKey)}
               </span>
             </button>
           )

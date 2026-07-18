@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import type { TranslationKey } from './translations'
 
 export type Listing = {
   id: string
@@ -11,16 +12,16 @@ export type Listing = {
   featured?: boolean
 }
 
-export const categories = [
-  { id: "all", label: "All", emoji: "✨" },
-  { id: "cars", label: "Cars", emoji: "🚗" },
-  { id: "pets", label: "Pets", emoji: "🐾" },
-  { id: "tech", label: "Tech", emoji: "📱" },
-  { id: "homes", label: "Homes", emoji: "🏠" },
-  { id: "fashion", label: "Fashion", emoji: "👟" },
-  { id: "furniture", label: "Furniture", emoji: "🛋️" },
-  { id: "bikes", label: "Bikes", emoji: "🚲" },
-  { id: "photo", label: "Photo", emoji: "📷" },
+export const categories: { id: string; labelKey: TranslationKey; emoji: string }[] = [
+  { id: "all", labelKey: "catAll", emoji: "✨" },
+  { id: "cars", labelKey: "catCars", emoji: "🚗" },
+  { id: "pets", labelKey: "catPets", emoji: "🐾" },
+  { id: "tech", labelKey: "catTech", emoji: "📱" },
+  { id: "homes", labelKey: "catHomes", emoji: "🏠" },
+  { id: "fashion", labelKey: "catFashion", emoji: "👟" },
+  { id: "furniture", labelKey: "catFurniture", emoji: "🛋️" },
+  { id: "bikes", labelKey: "catBikes", emoji: "🚲" },
+  { id: "photo", labelKey: "catPhoto", emoji: "📷" },
 ]
 
 // Static listings as fallback
