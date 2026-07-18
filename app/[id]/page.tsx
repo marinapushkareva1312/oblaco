@@ -5,6 +5,7 @@ import { ArrowLeft, Heart, Share2, MapPin, Clock, MessageCircle, Shield } from "
 import Link from "next/link"
 import { useRouter, useParams } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import { useLanguage } from "@/lib/language-context"
 
 type Listing = {
   id: string
@@ -19,6 +20,7 @@ type Listing = {
 }
 
 export default function ListingDetail() {
+  const { t } = useLanguage()
   const [saved, setSaved] = useState(false)
   const [listing, setListing] = useState<Listing | null>(null)
   const [loading, setLoading] = useState(true)
@@ -56,12 +58,12 @@ export default function ListingDetail() {
   if (!listing) {
     return (
       <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center gap-3 bg-[#F0F7FF] px-4 text-center">
-        <p className="text-lg font-bold text-[#1A1A2A]">Listing not found</p>
+        <p className="text-lg font-bold text-[#1A1A2A]">{t("listingNotFound")}</p>
         <button
           onClick={() => router.push("/")}
           className="rounded-2xl bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white"
         >
-          Back to home
+          {t("backToHome")}
         </button>
       </div>
     )
@@ -82,7 +84,7 @@ export default function ListingDetail() {
         >
           <ArrowLeft className="w-5 h-5 text-white" />
         </button>
-        <span className="text-white font-bold text-lg">Listing</span>
+        <span className="text-white font-bold text-lg">{t("listing")}</span>
         <div className="flex gap-2">
           <button
             onClick={() => setSaved(!saved)}
@@ -122,7 +124,7 @@ export default function ListingDetail() {
             <div className="flex items-start justify-between mb-1">
               <span className="text-2xl font-black text-[#2563EB]">{listing.price}</span>
               <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">
-                Active
+                {t("active")}
               </span>
             </div>
             <h1 className="text-lg font-bold text-[#1A1A2A] mb-3">{listing.title}</h1>
@@ -142,20 +144,20 @@ export default function ListingDetail() {
 
           {listing.description && (
             <div className="mx-4 mt-3 bg-white rounded-2xl p-4 shadow-sm md:mx-0 md:mt-0">
-              <h2 className="font-bold text-[#1A1A2A] mb-2 text-sm">Description</h2>
+              <h2 className="font-bold text-[#1A1A2A] mb-2 text-sm">{t("description")}</h2>
               <p className="text-gray-500 text-sm leading-relaxed">{listing.description}</p>
             </div>
           )}
 
           <div className="mx-4 mt-3 bg-white rounded-2xl p-4 shadow-sm md:mx-0 md:mt-0">
-            <h2 className="font-bold text-[#1A1A2A] mb-3 text-sm">Seller</h2>
+            <h2 className="font-bold text-[#1A1A2A] mb-3 text-sm">{t("seller")}</h2>
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                 {listing.user_id ? listing.user_id.charAt(0).toUpperCase() : "?"}
               </div>
               <div className="flex-1">
-                <div className="font-semibold text-[#1A1A2A] text-sm">Seller</div>
-                <div className="text-xs text-gray-400">Member of Oblaco community</div>
+                <div className="font-semibold text-[#1A1A2A] text-sm">{t("seller")}</div>
+                <div className="text-xs text-gray-400">{t("memberOfCommunity")}</div>
               </div>
             </div>
           </div>
@@ -167,7 +169,7 @@ export default function ListingDetail() {
                 style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
               >
                 <MessageCircle className="w-5 h-5" />
-                Chat with Seller
+                {t("chatWithSeller")}
               </button>
             </Link>
           </div>
@@ -182,7 +184,7 @@ export default function ListingDetail() {
             style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
           >
             <MessageCircle className="w-5 h-5" />
-            Chat with Seller
+            {t("chatWithSeller")}
           </button>
         </Link>
       </div>

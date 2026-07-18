@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { Settings, Star, Package, Heart, Globe, ChevronRight, LogOut, Shield, Bell, Camera } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import { useLanguage } from "@/lib/language-context"
+import type { Language } from "@/lib/translations"
 
 type Profile = {
   id: string
@@ -13,7 +15,7 @@ type Profile = {
 }
 
 export default function ProfilePage() {
-  const [language, setLanguage] = useState("en")
+  const { language, setLanguage, t } = useLanguage()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(true)
@@ -112,7 +114,7 @@ export default function ProfilePage() {
     setAvatarPreview(null)
   }
 
-  const languages = [
+  const languages: { code: Language; flag: string; label: string }[] = [
     { code: "en", flag: "🇬🇧", label: "English" },
     { code: "ru", flag: "🇷🇺", label: "Русский" },
     { code: "ko", flag: "🇰🇷", label: "한국어" },
@@ -121,21 +123,21 @@ export default function ProfilePage() {
   ]
 
   const stats = [
-    { label: "Listings", value: "12", icon: Package },
-    { label: "Reviews", value: "4.8★", icon: Star },
-    { label: "Saved", value: "24", icon: Heart },
+    { label: t("listingsStat"), value: "12", icon: Package },
+    { label: t("reviewsStat"), value: "4.8★", icon: Star },
+    { label: t("saved"), value: "24", icon: Heart },
   ]
 
   const menuItems = [
-    { icon: Package, label: "My Listings", sublabel: "12 active", href: "/" },
-    { icon: Heart, label: "Saved Items", sublabel: "24 items", href: "/" },
-    { icon: Bell, label: "Notifications", sublabel: "All enabled", href: "/" },
-    { icon: Shield, label: "Privacy & Safety", sublabel: "", href: "/" },
-    { icon: Settings, label: "Settings", sublabel: "", href: "/" },
+    { icon: Package, label: t("myListings"), sublabel: `12 ${t("active")}`, href: "/" },
+    { icon: Heart, label: t("savedItemsMenu"), sublabel: `24 ${t("items")}`, href: "/" },
+    { icon: Bell, label: t("notifications"), sublabel: t("allEnabled"), href: "/" },
+    { icon: Shield, label: t("privacySafety"), sublabel: "", href: "/" },
+    { icon: Settings, label: t("settings"), sublabel: "", href: "/" },
   ]
 
-  const displayName = profile?.name || nameInput || "User"
-  const displayLocation = profile?.location || "Add your location"
+  const displayName = profile?.name || nameInput || t("user")
+  const displayLocation = profile?.location || t("addYourLocation")
   const displayAvatar = avatarPreview || profile?.avatar_url
 
   if (loading) {
@@ -165,7 +167,7 @@ export default function ProfilePage() {
               }}
               className="text-xs font-semibold text-white/80"
             >
-              Cancel
+              {t("cancel")}
             </button>
           ) : (
             <div />
@@ -177,14 +179,14 @@ export default function ProfilePage() {
               disabled={saving}
               className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-[#2563EB] disabled:opacity-60"
             >
-              {saving ? "Saving..." : "Save"}
+              {saving ? t("saving") : t("save")}
             </button>
           ) : (
             <button
               onClick={() => setEditing(true)}
               className="rounded-full bg-white/20 px-4 py-1.5 text-xs font-semibold text-white"
             >
-              Edit Profile
+              {t("editProfile")}
             </button>
           )}
         </div>
@@ -221,7 +223,7 @@ export default function ProfilePage() {
             type="text"
             value={nameInput}
             onChange={(e) => setNameInput(e.target.value)}
-            placeholder="Your name"
+            placeholder={t("yourName")}
             className="w-full max-w-xs rounded-xl bg-white/20 px-3 py-2 text-center text-white placeholder:text-white/60 outline-none font-bold text-xl"
           />
         ) : (
@@ -233,7 +235,7 @@ export default function ProfilePage() {
             type="text"
             value={locationInput}
             onChange={(e) => setLocationInput(e.target.value)}
-            placeholder="Your location"
+            placeholder={t("yourLocation")}
             className="mt-2 w-full max-w-xs rounded-xl bg-white/20 px-3 py-1.5 text-center text-xs text-white placeholder:text-white/60 outline-none"
           />
         ) : (
@@ -242,7 +244,7 @@ export default function ProfilePage() {
 
         <div className="mt-2 flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
           <Shield className="w-3 h-3 text-green-300" />
-          <span className="text-green-300 text-xs font-semibold">Verified member</span>
+          <span className="text-green-300 text-xs font-semibold">{t("verifiedMember")}</span>
         </div>
 
         <div className="mt-5 w-full grid grid-cols-3 gap-2 md:max-w-md">
@@ -261,7 +263,7 @@ export default function ProfilePage() {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Globe className="w-4 h-4 text-[#2563EB]" />
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">App Language</span>
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{t("appLanguage")}</span>
             </div>
             <div className="flex gap-2 flex-wrap">
               {languages.map((lang) => (
@@ -282,14 +284,14 @@ export default function ProfilePage() {
           </div>
 
           <div className="border-t border-gray-100 pt-4">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Account</span>
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{t("account")}</span>
             <div className="mt-3 space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-400">Email</span>
+                <span className="text-gray-400">{t("email")}</span>
                 <span className="font-medium text-[#1A1A2A]">{email}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Location</span>
+                <span className="text-gray-400">{t("location")}</span>
                 <span className="font-medium text-[#1A1A2A]">{displayLocation}</span>
               </div>
             </div>
@@ -327,7 +329,7 @@ export default function ProfilePage() {
               className="w-full bg-white rounded-2xl py-4 flex items-center justify-center gap-2 shadow-sm"
             >
               <LogOut className="w-4 h-4 text-red-400" />
-              <span className="text-sm font-semibold text-red-400">Sign Out</span>
+              <span className="text-sm font-semibold text-red-400">{t("signOut")}</span>
             </button>
           </div>
 

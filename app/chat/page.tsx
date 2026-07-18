@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { ArrowLeft, Send, Mic, Globe } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useLanguage } from "@/lib/language-context"
 
 type Message = {
   id: string
@@ -36,6 +37,7 @@ const initialMessages: Message[] = [
 ]
 
 export default function ChatPage() {
+  const { t } = useLanguage()
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [input, setInput] = useState("")
   const [translateAll, setTranslateAll] = useState(true)
@@ -93,7 +95,7 @@ export default function ChatPage() {
           }`}
         >
           <Globe className="w-3 h-3" />
-          <span>Translate</span>
+          <span>{t("translate")}</span>
         </button>
       </div>
 
@@ -125,7 +127,7 @@ export default function ChatPage() {
                   onClick={() => toggleTranslation(msg.id)}
                   className={`mt-1 text-xs underline ${msg.sender === "me" ? "text-white/60" : "text-[#2563EB]"}`}
                 >
-                  {msg.showTranslation ? "Hide translation" : "Translate"}
+                  {msg.showTranslation ? t("hideTranslation") : t("translate")}
                 </button>
               )}
               {msg.translated && !translateAll && msg.showTranslation && (
@@ -148,7 +150,7 @@ export default function ChatPage() {
           <div className="flex-1 bg-[#F0F7FF] rounded-2xl px-4 py-3 flex items-center">
             <input
               type="text"
-              placeholder="Message in any language..."
+              placeholder={t("messagePlaceholder")}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}

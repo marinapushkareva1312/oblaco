@@ -4,8 +4,10 @@ import { useState, useRef } from "react"
 import { ArrowLeft, Camera, Mic, Sparkles, MapPin, Tag, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import { useLanguage } from "@/lib/language-context"
 
 export default function PostListing() {
+  const { t } = useLanguage()
   const [title, setTitle] = useState("")
   const [price, setPrice] = useState("")
   const [description, setDescription] = useState("")
@@ -44,23 +46,23 @@ export default function PostListing() {
   }
 
   const categories = [
-    { id: "furniture", label: "Furniture", emoji: "🛋️" },
-    { id: "electronics", label: "Electronics", emoji: "📱" },
-    { id: "fashion", label: "Fashion", emoji: "👗" },
-    { id: "pets", label: "Pets", emoji: "🐾" },
-    { id: "housing", label: "Housing", emoji: "🏠" },
-    { id: "other", label: "Other", emoji: "📦" },
+    { id: "furniture", label: t("catFurniture"), emoji: "🛋️" },
+    { id: "electronics", label: t("catElectronics"), emoji: "📱" },
+    { id: "fashion", label: t("catFashion"), emoji: "👗" },
+    { id: "pets", label: t("catPets"), emoji: "🐾" },
+    { id: "housing", label: t("catHousing"), emoji: "🏠" },
+    { id: "other", label: t("catOther"), emoji: "📦" },
   ]
 
   const handleSubmit = async () => {
     setErrorMsg("")
 
     if (!title.trim()) {
-      setErrorMsg("Please enter a title")
+      setErrorMsg(t("errorEnterTitle"))
       return
     }
     if (!category) {
-      setErrorMsg("Please select a category")
+      setErrorMsg(t("errorSelectCategory"))
       return
     }
 
@@ -69,7 +71,7 @@ export default function PostListing() {
     const { data: userData } = await supabase.auth.getUser()
 
     if (!userData?.user) {
-      setErrorMsg("Please sign in to post a listing")
+      setErrorMsg(t("errorSignInToPost"))
       setSubmitting(false)
       return
     }
@@ -86,7 +88,7 @@ export default function PostListing() {
 
       if (uploadError) {
         console.error("Ошибка загрузки фото:", uploadError)
-        setErrorMsg("Failed to upload photo. Please try again.")
+        setErrorMsg(t("errorUploadPhoto"))
         setSubmitting(false)
         return
       }
@@ -114,7 +116,7 @@ export default function PostListing() {
 
     if (error || !inserted) {
       console.error("Ошибка создания объявления:", error)
-      setErrorMsg("Something went wrong. Please try again.")
+      setErrorMsg(t("errorGeneric"))
       setSubmitting(false)
       return
     }
@@ -146,7 +148,7 @@ export default function PostListing() {
         >
           <ArrowLeft className="w-5 h-5 text-white" />
         </button>
-        <span className="text-white font-bold text-lg">Post Listing</span>
+        <span className="text-white font-bold text-lg">{t("postListing")}</span>
         <div className="w-10" />
       </div>
 
@@ -155,7 +157,7 @@ export default function PostListing() {
         <div className="space-y-3">
 
           <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">Photos</p>
+            <p className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">{t("photos")}</p>
             <div className="flex gap-3">
               <input
                 ref={fileInputRef}
@@ -186,17 +188,17 @@ export default function PostListing() {
                   className="w-24 h-24 md:h-40 md:w-40 rounded-xl bg-[#F0F7FF] border-2 border-dashed border-[#2563EB] flex flex-col items-center justify-center gap-1 cursor-pointer"
                 >
                   <Camera className="w-6 h-6 text-[#2563EB]" />
-                  <span className="text-xs text-[#2563EB] font-medium">Add photo</span>
+                  <span className="text-xs text-[#2563EB] font-medium">{t("addPhoto")}</span>
                 </button>
               )}
             </div>
           </div>
 
           <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Title</p>
+            <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">{t("title")}</p>
             <input
               type="text"
-              placeholder="What are you selling?"
+              placeholder={t("whatSelling")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full text-sm text-[#1A1A2A] placeholder-gray-300 outline-none"
@@ -204,7 +206,7 @@ export default function PostListing() {
           </div>
 
           <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">Category</p>
+            <p className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">{t("category")}</p>
             <div className="grid grid-cols-3 gap-2">
               {categories.map((cat) => (
                 <button
@@ -228,7 +230,7 @@ export default function PostListing() {
         <div className="space-y-3 mt-3 md:mt-0">
 
           <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Price</p>
+            <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">{t("price")}</p>
             <div className="flex items-center gap-2">
               <Tag className="w-4 h-4 text-[#2563EB]" />
               <span className="text-[#2563EB] font-bold">₩</span>
@@ -244,18 +246,18 @@ export default function PostListing() {
                 onClick={() => setPrice("")}
                 className="text-xs text-gray-400 bg-[#F0F7FF] px-3 py-1 rounded-full"
               >
-                Free
+                {t("free")}
               </button>
             </div>
           </div>
 
           <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">Location</p>
+            <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">{t("location")}</p>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-[#2563EB]" />
               <input
                 type="text"
-                placeholder="e.g. Haeundae, Busan"
+                placeholder={t("locationPlaceholder")}
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 className="flex-1 text-sm text-[#1A1A2A] placeholder-gray-300 outline-none"
@@ -265,7 +267,7 @@ export default function PostListing() {
 
           <div className="bg-white rounded-2xl p-4 shadow-sm">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Description</p>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{t("description")}</p>
               <button
                 onClick={generateAIDescription}
                 disabled={!title || aiLoading}
@@ -278,18 +280,18 @@ export default function PostListing() {
                 {aiLoading ? (
                   <>
                     <span className="animate-spin">⏳</span>
-                    <span>Generating...</span>
+                    <span>{t("generating")}</span>
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-3 h-3" />
-                    <span>AI Write</span>
+                    <span>{t("aiWrite")}</span>
                   </>
                 )}
               </button>
             </div>
             <textarea
-              placeholder="Describe your item... or tap AI Write above!"
+              placeholder={t("descriptionPlaceholder")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
@@ -302,8 +304,8 @@ export default function PostListing() {
               <Mic className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-[#2563EB]">Voice Description</p>
-              <p className="text-xs text-gray-400 mt-0.5">Speak in any language — AI will write the listing for you</p>
+              <p className="text-xs font-semibold text-[#2563EB]">{t("voiceDescription")}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{t("voiceHint")}</p>
             </div>
           </div>
 
@@ -319,7 +321,7 @@ export default function PostListing() {
             className="hidden md:flex w-full py-4 rounded-2xl items-center justify-center gap-2 text-white font-bold text-base shadow-lg disabled:opacity-60"
             style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
           >
-            {submitting ? "Posting..." : "Post Listing"}
+            {submitting ? t("posting") : t("postListing")}
           </button>
 
         </div>
@@ -332,7 +334,7 @@ export default function PostListing() {
           className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg disabled:opacity-60"
           style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
         >
-          {submitting ? "Posting..." : "Post Listing"}
+          {submitting ? t("posting") : t("postListing")}
         </button>
       </div>
 
