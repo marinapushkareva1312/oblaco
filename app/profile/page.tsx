@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
 import type { Language } from "@/lib/translations"
+import { BottomNav } from "@/components/bottom-nav"
 
 type Profile = {
   id: string
@@ -335,6 +336,8 @@ export default function ProfilePage() {
 
         </div>
       </div>
+
+      <BottomNav active="profile" onSelect={() => {}} favoritesCount={0} />
 
     </div>
   )

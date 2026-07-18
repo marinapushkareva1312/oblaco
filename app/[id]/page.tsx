@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useRouter, useParams } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
+import { BottomNav } from "@/components/bottom-nav"
 
 type Listing = {
   id: string
@@ -51,6 +52,7 @@ export default function ListingDetail() {
     return (
       <div className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-[#F0F7FF]">
         <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
+        <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
       </div>
     )
   }
@@ -65,6 +67,7 @@ export default function ListingDetail() {
         >
           {t("backToHome")}
         </button>
+        <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
       </div>
     )
   }
@@ -72,7 +75,7 @@ export default function ListingDetail() {
   const timeAgo = new Date(listing.created_at).toLocaleDateString()
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-24 md:max-w-5xl md:pb-10">
+    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-48 md:max-w-5xl md:pb-10">
 
       <div
         className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-6"
@@ -177,7 +180,7 @@ export default function ListingDetail() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100 md:hidden">
+      <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100 md:hidden">
         <Link href="/chat">
           <button
             className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
@@ -188,6 +191,8 @@ export default function ListingDetail() {
           </button>
         </Link>
       </div>
+
+      <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
 
     </div>
   )

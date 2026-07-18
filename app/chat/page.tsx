@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { ArrowLeft, Send, Mic, Globe } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/lib/language-context"
+import { BottomNav } from "@/components/bottom-nav"
 
 type Message = {
   id: string
@@ -166,6 +167,9 @@ export default function ChatPage() {
           </button>
         </div>
       </div>
+
+      <div className="h-24 md:hidden" />
+      <BottomNav active="chats" onSelect={() => {}} favoritesCount={0} />
 
     </div>
   )

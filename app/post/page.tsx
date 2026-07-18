@@ -5,6 +5,7 @@ import { ArrowLeft, Camera, Mic, Sparkles, MapPin, Tag, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
+import { BottomNav } from "@/components/bottom-nav"
 
 export default function PostListing() {
   const { t } = useLanguage()
@@ -136,7 +137,7 @@ export default function PostListing() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-32 md:max-w-5xl md:pb-10">
+    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-56 md:max-w-5xl md:pb-10">
 
       <div
         className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-6"
@@ -327,7 +328,7 @@ export default function PostListing() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100 md:hidden">
+      <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100 md:hidden">
         <button
           onClick={handleSubmit}
           disabled={submitting}
@@ -337,6 +338,8 @@ export default function PostListing() {
           {submitting ? t("posting") : t("postListing")}
         </button>
       </div>
+
+      <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
 
     </div>
   )
