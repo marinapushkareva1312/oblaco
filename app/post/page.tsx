@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
 import { BottomNav } from "@/components/bottom-nav"
+import { DesktopNav } from "@/components/desktop-nav"
 
 export default function PostListing() {
   const { t } = useLanguage()
@@ -139,8 +140,10 @@ export default function PostListing() {
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-56 md:max-w-5xl md:pb-10">
 
+      <DesktopNav active="" />
+
       <div
-        className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-6"
+        className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-4"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
         <button

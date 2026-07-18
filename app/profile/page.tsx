@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
 import type { Language } from "@/lib/translations"
 import { BottomNav } from "@/components/bottom-nav"
+import { DesktopNav } from "@/components/desktop-nav"
 
 type Profile = {
   id: string
@@ -143,8 +144,12 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-[#F0F7FF]">
-        <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-5xl">
+        <DesktopNav active="profile" />
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
+        </div>
+        <BottomNav active="profile" onSelect={() => {}} favoritesCount={0} />
       </div>
     )
   }
@@ -152,8 +157,10 @@ export default function ProfilePage() {
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-24 md:max-w-5xl md:pb-10">
 
+      <DesktopNav active="profile" />
+
       <div
-        className="px-4 pt-12 pb-8 flex flex-col items-center rounded-b-3xl shadow-lg md:rounded-2xl md:mt-6 md:pt-6"
+        className="px-4 pt-12 pb-8 flex flex-col items-center rounded-b-3xl shadow-lg md:rounded-2xl md:mt-4 md:pt-6"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
         <div className="w-full flex justify-between mb-4">

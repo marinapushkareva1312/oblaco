@@ -5,6 +5,7 @@ import { ArrowLeft, Send, Mic, Globe } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useLanguage } from "@/lib/language-context"
 import { BottomNav } from "@/components/bottom-nav"
+import { DesktopNav } from "@/components/desktop-nav"
 
 type Message = {
   id: string
@@ -70,7 +71,11 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] flex flex-col md:max-w-3xl md:my-6 md:min-h-[85vh] md:rounded-3xl md:shadow-xl md:overflow-hidden">
+    <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-3xl">
+
+      <DesktopNav active="chats" />
+
+      <div className="flex flex-1 flex-col md:my-6 md:min-h-[85vh] md:rounded-3xl md:shadow-xl md:overflow-hidden">
 
       <div
         className="px-4 pt-12 pb-4 flex items-center gap-3 rounded-b-3xl shadow-lg md:rounded-none md:pt-6"
@@ -166,6 +171,8 @@ export default function ChatPage() {
             <Send className="w-4 h-4 text-white" />
           </button>
         </div>
+      </div>
+
       </div>
 
       <div className="h-24 md:hidden" />

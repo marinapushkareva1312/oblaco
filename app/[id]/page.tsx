@@ -7,6 +7,7 @@ import { useRouter, useParams } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
 import { BottomNav } from "@/components/bottom-nav"
+import { DesktopNav } from "@/components/desktop-nav"
 
 type Listing = {
   id: string
@@ -50,8 +51,11 @@ export default function ListingDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-[#F0F7FF]">
-        <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-5xl">
+        <DesktopNav active="" />
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
+        </div>
         <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
       </div>
     )
@@ -59,14 +63,17 @@ export default function ListingDetail() {
 
   if (!listing) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center gap-3 bg-[#F0F7FF] px-4 text-center">
-        <p className="text-lg font-bold text-[#1A1A2A]">{t("listingNotFound")}</p>
-        <button
-          onClick={() => router.push("/")}
-          className="rounded-2xl bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white"
-        >
-          {t("backToHome")}
-        </button>
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-5xl">
+        <DesktopNav active="" />
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
+          <p className="text-lg font-bold text-[#1A1A2A]">{t("listingNotFound")}</p>
+          <button
+            onClick={() => router.push("/")}
+            className="rounded-2xl bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white"
+          >
+            {t("backToHome")}
+          </button>
+        </div>
         <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
       </div>
     )
@@ -77,8 +84,10 @@ export default function ListingDetail() {
   return (
     <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-48 md:max-w-5xl md:pb-10">
 
+      <DesktopNav active="" />
+
       <div
-        className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-6"
+        className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-4"
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
         <button
