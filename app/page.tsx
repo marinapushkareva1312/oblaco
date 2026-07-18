@@ -8,8 +8,9 @@ import { BottomNav } from "@/components/bottom-nav"
 import { listings as staticListings, fetchListings } from "@/lib/listings"
 import type { Listing } from "@/lib/listings"
 import { searchListings } from "@/lib/embeddings"
-
+import { useLanguage } from "@/lib/language-context"
 export default function Page() {
+  const { t } = useLanguage()
   const [activeCategory, setActiveCategory] = useState("all")
   const [activeNav, setActiveNav] = useState("home")
   const [favorites, setFavorites] = useState<string[]>(["1"])
@@ -84,23 +85,23 @@ export default function Page() {
 
         <div className="mt-6 flex items-center justify-between">
           <h2 className="text-lg font-bold text-foreground">
-            {searchResults !== null
-              ? "Search results"
-              : activeNav === "saved"
-              ? "Saved items"
-              : "Recent listings"}
-          </h2>
+  {searchResults !== null
+    ? t("searchResults")
+    : activeNav === "saved"
+    ? t("savedItems")
+    : t("recentListings")}
+</h2>
           <span className="text-xs font-medium text-muted-foreground">
-            {loading || searching ? "Loading..." : `${visibleListings.length} results`}
-          </span>
+  {loading || searching ? t("loading") : `${visibleListings.length} ${t("results")}`}
+</span>
         </div>
 
         {loading || searching ? (
           <div className="mt-16 flex flex-col items-center text-center">
             <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin mb-3" />
             <p className="text-sm text-muted-foreground">
-              {searching ? "Searching..." : "Loading listings..."}
-            </p>
+  {searching ? t("searching") : t("loadingListings")}
+</p>
           </div>
         ) : visibleListings.length > 0 ? (
           <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
@@ -115,14 +116,14 @@ export default function Page() {
           </div>
         ) : (
           <div className="mt-16 flex flex-col items-center text-center">
-            <p className="text-sm font-medium text-foreground">No listings here yet</p>
-            <p className="mt-1 text-xs text-muted-foreground text-pretty">
-              {searchResults !== null
-                ? "Try a different search term."
-                : activeNav === "saved"
-                ? "Tap the heart on a listing to save it."
-                : "Try a different category."}
-            </p>
+            <p className="text-sm font-medium text-foreground">{t("noListingsYet")}</p>
+<p className="mt-1 text-xs text-muted-foreground text-pretty">
+  {searchResults !== null
+    ? t("tryDifferentSearch")
+    : activeNav === "saved"
+    ? t("tapHeartToSave")
+    : t("tryDifferentCategory")}
+</p>
           </div>
         )}
       </div>

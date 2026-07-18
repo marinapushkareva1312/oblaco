@@ -3,6 +3,7 @@
 import { Search, SlidersHorizontal, Bell, Home, Heart, MessageCircle, User, Plus } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/language-context"
 
 interface MarketplaceHeaderProps {
   searchQuery: string
@@ -26,6 +27,7 @@ export function MarketplaceHeader({
   onNavSelect,
   favoritesCount = 0,
 }: MarketplaceHeaderProps) {
+  const { t } = useLanguage()
   return (
     <header
       className="rounded-b-3xl px-5 pb-6 pt-7 text-white shadow-lg md:rounded-2xl md:px-8 md:py-5"
@@ -34,8 +36,8 @@ export function MarketplaceHeader({
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
         <div className="flex items-center gap-10">
           <div>
-            <p className="hidden text-xs font-medium text-white/70 md:block">Your home under the same sky</p>
-            <h1 className="text-2xl font-black tracking-widest text-white drop-shadow-lg md:text-xl">OBLACO</h1>
+            <p className="hidden text-xs font-medium text-white/70 md:block">{t("tagline")}</p>
+            <h1 className="text-2xl font-black tracking-widest text-white drop-shadow-lg md:text-xl">{t("appName")}</h1>
           </div>
 
           {/* Desktop nav */}
@@ -54,7 +56,7 @@ export function MarketplaceHeader({
                     )}
                   >
                     <Icon className="h-4 w-4" />
-                    {item.label}
+                    {item.id === "home" ? t("home") : item.id === "saved" ? t("saved") : item.id === "chats" ? t("chats") : t("profile")}
                     {item.id === "saved" && favoritesCount > 0 && (
                       <span className="ml-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-[#2563EB]">
                         {favoritesCount}
@@ -72,8 +74,8 @@ export function MarketplaceHeader({
             <Search className="h-4 w-4 shrink-0 text-white/80" />
             <input
               type="search"
-              placeholder="Search marketplace"
-              aria-label="Search marketplace"
+              placeholder={t("searchPlaceholder")}
+              aria-label={t("searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               className="w-full bg-transparent text-sm text-white placeholder:text-white/60 focus:outline-none"
@@ -85,7 +87,7 @@ export function MarketplaceHeader({
               className="flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2.5 text-sm font-semibold text-[#1E3A5F] shadow-md transition-transform active:scale-95"
             >
               <Plus className="h-4 w-4" />
-              Sell
+              {t("sell")}
             </button>
           </Link>
         </div>
