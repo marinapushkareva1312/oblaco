@@ -110,6 +110,19 @@ export const listings: Listing[] = [
   },
 ]
 
+function mapListingRow(item: any): Listing {
+  return {
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    location: item.location,
+    postedAt: new Date(item.created_at).toLocaleDateString(),
+    image: item.image || '/listings/sofa.png',
+    category: item.category,
+    featured: item.featured,
+  }
+}
+
 // Fetch listings from Supabase
 export async function fetchListings(): Promise<Listing[]> {
   const { data, error } = await supabase
@@ -122,14 +135,21 @@ export async function fetchListings(): Promise<Listing[]> {
     return listings // fallback to static data
   }
 
-  return data.map((item) => ({
-    id: item.id,
-    title: item.title,
-    price: item.price,
-    location: item.location,
-    postedAt: new Date(item.created_at).toLocaleDateString(),
-    image: item.image || '/listings/sofa.png',
-    category: item.category,
-    featured: item.featured,
-  }))
+  return data.map(mapListingRow)
+}
+
+// Fetch only the listings posted by a given user
+export async function fetchMyListings(userId: string): Promise<Listing[]> {
+  const { data, error } = await supabase
+    .from('listings')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+
+  if (error || !data) {
+    console.error('Supabase error:', error)
+    return []
+  }
+
+  return data.map(mapListingRow)
 }

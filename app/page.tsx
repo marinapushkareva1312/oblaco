@@ -1,6 +1,7 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
+import { useMemo, useState, useEffect, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { ArrowUp, ChevronDown } from "lucide-react"
 import { MarketplaceHeader } from "@/components/marketplace-header"
 import { AppShell } from "@/components/app-shell"
@@ -15,7 +16,16 @@ import { useLanguage } from "@/lib/language-context"
 type SortOption = "newest" | "price-asc" | "price-desc"
 
 export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
+  )
+}
+
+function HomeContent() {
   const { t } = useLanguage()
+  const searchParams = useSearchParams()
   const [activeCategory, setActiveCategory] = useState("all")
   const [activeNav, setActiveNav] = useState("home")
   const [favorites, setFavorites] = useState<string[]>(["1"])
@@ -26,6 +36,12 @@ export default function Page() {
   const [searching, setSearching] = useState(false)
   const [sortBy, setSortBy] = useState<SortOption>("newest")
   const [showBackToTop, setShowBackToTop] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get("tab") === "saved") {
+      setActiveNav("saved")
+    }
+  }, [searchParams])
 
   useEffect(() => {
     const loadListings = async () => {

@@ -132,11 +132,11 @@ export default function ProfilePage() {
   ]
 
   const menuItems = [
-    { icon: Package, label: t("myListings"), sublabel: `12 ${t("active")}`, href: "/" },
-    { icon: Heart, label: t("savedItemsMenu"), sublabel: `24 ${t("items")}`, href: "/" },
-    { icon: Bell, label: t("notifications"), sublabel: t("allEnabled"), href: "/" },
-    { icon: Shield, label: t("privacySafety"), sublabel: "", href: "/" },
-    { icon: Settings, label: t("settings"), sublabel: "", href: "/" },
+    { icon: Package, label: t("myListings"), sublabel: `12 ${t("active")}`, href: "/my-listings" },
+    { icon: Heart, label: t("savedItemsMenu"), sublabel: `24 ${t("items")}`, href: "/?tab=saved" },
+    { icon: Bell, label: t("notifications"), sublabel: t("allEnabled"), href: "/notifications" },
+    { icon: Shield, label: t("privacySafety"), sublabel: "", href: "/privacy" },
+    { icon: Settings, label: t("settings"), sublabel: "", href: "/settings" },
   ]
 
   const displayName = profile?.name || nameInput || t("user")
