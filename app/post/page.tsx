@@ -244,21 +244,18 @@ export default function PostListing() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-56 md:max-w-5xl md:pb-10">
+    <div className="mx-auto min-h-screen max-w-md bg-background pb-56 md:max-w-5xl md:pb-10">
 
       <DesktopNav active="" />
 
-      <div
-        className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-4"
-        style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-      >
+      <div className="px-4 pt-12 pb-4 flex items-center justify-between border-b border-border/60 bg-card shadow-sm md:rounded-2xl md:border md:px-6 md:py-4 md:mt-4">
         <button
           onClick={() => router.back()}
-          className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+          className="w-10 h-10 rounded-full bg-muted flex items-center justify-center"
         >
-          <ArrowLeft className="w-5 h-5 text-white" />
+          <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
-        <span className="text-white font-bold text-lg">{t("postListing")}</span>
+        <span className="text-foreground font-semibold text-lg">{t("postListing")}</span>
         <div className="w-10" />
       </div>
 
@@ -295,7 +292,7 @@ export default function PostListing() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-24 h-24 md:h-40 md:w-40 rounded-xl bg-[#F0F7FF] border-2 border-dashed border-[#2563EB] flex flex-col items-center justify-center gap-1 cursor-pointer"
+                  className="w-24 h-24 md:h-40 md:w-40 rounded-xl bg-muted border-2 border-dashed border-[#2563EB]/40 flex flex-col items-center justify-center gap-1 cursor-pointer"
                 >
                   <Camera className="w-6 h-6 text-[#2563EB]" />
                   <span className="text-xs text-[#2563EB] font-medium">{t("addPhoto")}</span>
@@ -324,8 +321,8 @@ export default function PostListing() {
                   onClick={() => setCategory(cat.id)}
                   className={`py-2 px-3 rounded-xl text-xs font-semibold flex items-center gap-1 justify-center transition-all ${
                     category === cat.id
-                      ? "bg-[#2563EB] text-white"
-                      : "bg-[#F0F7FF] text-gray-500"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
                   }`}
                 >
                   <span>{cat.emoji}</span>
@@ -354,7 +351,7 @@ export default function PostListing() {
               <button
                 type="button"
                 onClick={() => setPrice("")}
-                className="text-xs text-gray-400 bg-[#F0F7FF] px-3 py-1 rounded-full"
+                className="text-xs text-gray-400 bg-muted px-3 py-1 rounded-full"
               >
                 {t("free")}
               </button>
@@ -414,7 +411,7 @@ export default function PostListing() {
             onClick={toggleVoiceRecording}
             disabled={polishing}
             className={`w-full text-left rounded-2xl border p-4 flex items-center gap-3 transition-colors disabled:opacity-60 ${
-              isRecording ? "bg-red-50 border-red-200" : "bg-[#EFF6FF] border-[#BFDBFE]"
+              isRecording ? "bg-red-50 border-red-200" : "bg-muted border-border/60"
             }`}
           >
             <div
@@ -441,8 +438,7 @@ export default function PostListing() {
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="hidden md:flex w-full py-4 rounded-2xl items-center justify-center gap-2 text-white font-bold text-base shadow-lg disabled:opacity-60"
-            style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
+            className="hidden md:flex w-full py-4 rounded-2xl items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-base shadow-sm disabled:opacity-60"
           >
             {submitting ? t("posting") : t("postListing")}
           </button>
@@ -454,8 +450,7 @@ export default function PostListing() {
         <button
           onClick={handleSubmit}
           disabled={submitting}
-          className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg disabled:opacity-60"
-          style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
+          className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-base shadow-sm disabled:opacity-60"
         >
           {submitting ? t("posting") : t("postListing")}
         </button>

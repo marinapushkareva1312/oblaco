@@ -57,29 +57,25 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] flex flex-col">
+    <div className="mx-auto min-h-screen max-w-md bg-background flex flex-col">
 
-      {/* Top gradient section */}
-      <div
-        className="px-6 pt-16 pb-10 flex flex-col items-center rounded-b-3xl shadow-lg"
-        style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-      >
-        <p className="text-white/60 text-xs mb-1">Your home under the same sky</p>
-        <span className="text-white font-black text-3xl tracking-widest">OBLACO</span>
+      {/* Top section */}
+      <div className="px-6 pt-16 pb-10 flex flex-col items-center border-b border-border/60 bg-card">
+        <span className="text-foreground font-semibold text-3xl">Oblaco</span>
 
-        <div className="mt-8 bg-white/20 rounded-2xl p-1 flex w-full">
+        <div className="mt-8 bg-muted rounded-2xl p-1 flex w-full">
           <button
             onClick={() => setIsLogin(true)}
-            className={`flex-1 py-2.5 rounded-xl text-sm font-bold transition-all ${
-              isLogin ? "bg-white text-[#2563EB]" : "text-white"
+            className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              isLogin ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             Sign In
           </button>
           <button
             onClick={() => setIsLogin(false)}
-            className={`flex-1 py-2.5 rounded-xl text-sm font-bold transition-all ${
-              !isLogin ? "bg-white text-[#2563EB]" : "text-white"
+            className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              !isLogin ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"
             }`}
           >
             Sign Up
@@ -146,8 +142,8 @@ export default function AuthPage() {
                   onClick={() => setLanguage(lang.code)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
                     language === lang.code
-                      ? "bg-[#2563EB] text-white"
-                      : "bg-[#F0F7FF] text-gray-500"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-gray-500"
                   }`}
                 >
                   <span>{lang.flag}</span>
@@ -210,8 +206,7 @@ export default function AuthPage() {
         <button
           onClick={handleEmailLogin}
           disabled={loading}
-          className="w-full py-4 rounded-2xl flex items-center justify-center text-white font-bold text-base shadow-lg"
-          style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
+          className="w-full py-4 rounded-2xl flex items-center justify-center bg-primary text-primary-foreground font-semibold text-base shadow-sm"
         >
           {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
         </button>

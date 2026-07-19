@@ -51,7 +51,7 @@ export default function ListingDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-5xl">
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-5xl">
         <DesktopNav active="" />
         <div className="flex flex-1 items-center justify-center">
           <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
@@ -63,7 +63,7 @@ export default function ListingDetail() {
 
   if (!listing) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-5xl">
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-5xl">
         <DesktopNav active="" />
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
           <p className="text-lg font-bold text-[#1A1A2A]">{t("listingNotFound")}</p>
@@ -82,34 +82,30 @@ export default function ListingDetail() {
   const timeAgo = new Date(listing.created_at).toLocaleDateString()
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-48 md:max-w-5xl md:pb-10">
+    <div className="mx-auto min-h-screen max-w-md bg-background pb-48 md:max-w-5xl md:pb-10">
 
       <DesktopNav active="" />
 
-      <div
-        className="px-4 pt-12 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg md:rounded-2xl md:px-6 md:py-4 md:mt-4"
-        style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-      >
+      <div className="px-4 pt-12 pb-4 flex items-center justify-between border-b border-border/60 bg-card shadow-sm md:rounded-2xl md:border md:px-6 md:py-4 md:mt-4">
         <button
           onClick={() => router.back()}
-          className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+          className="w-10 h-10 rounded-full bg-muted flex items-center justify-center"
         >
-          <ArrowLeft className="w-5 h-5 text-white" />
+          <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
-        <span className="text-white font-bold text-lg">{t("listing")}</span>
+        <span className="text-foreground font-semibold text-lg">{t("listing")}</span>
         <div className="flex gap-2">
           <button
             onClick={() => setSaved(!saved)}
-            className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-muted flex items-center justify-center"
           >
             <Heart
-              className="w-5 h-5"
-              fill={saved ? "white" : "none"}
-              stroke="white"
+              className={saved ? "w-5 h-5 text-primary" : "w-5 h-5 text-foreground"}
+              fill={saved ? "currentColor" : "none"}
             />
           </button>
-          <button className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-            <Share2 className="w-5 h-5 text-white" />
+          <button className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+            <Share2 className="w-5 h-5 text-foreground" />
           </button>
         </div>
       </div>
@@ -134,7 +130,7 @@ export default function ListingDetail() {
 
           <div className="mx-4 mt-4 bg-white rounded-2xl p-4 shadow-sm md:mx-0 md:mt-0">
             <div className="flex items-start justify-between mb-1">
-              <span className="text-2xl font-black text-[#2563EB]">{listing.price}</span>
+              <span className="text-2xl font-bold text-[#2563EB]">{listing.price}</span>
               <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">
                 {t("active")}
               </span>
@@ -176,10 +172,7 @@ export default function ListingDetail() {
 
           <div className="hidden md:block md:mt-1">
             <Link href="/chat/1">
-              <button
-                className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
-                style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-              >
+              <button className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-base shadow-sm">
                 <MessageCircle className="w-5 h-5" />
                 {t("chatWithSeller")}
               </button>
@@ -191,10 +184,7 @@ export default function ListingDetail() {
 
       <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100 md:hidden">
         <Link href="/chat/1">
-          <button
-            className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
-            style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-          >
+          <button className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-base shadow-sm">
             <MessageCircle className="w-5 h-5" />
             {t("chatWithSeller")}
           </button>

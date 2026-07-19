@@ -20,12 +20,9 @@ type DesktopNavProps = {
 export function DesktopNav({ active, favoritesCount = 0 }: DesktopNavProps) {
   const { t } = useLanguage()
   return (
-    <div
-      className="hidden items-center justify-between rounded-2xl px-6 py-4 shadow-lg md:mt-6 md:flex"
-      style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-    >
-      <Link href="/" className="text-lg font-black tracking-widest text-white">
-        OBLACO
+    <div className="hidden items-center justify-between rounded-2xl border border-border/60 bg-card px-6 py-4 shadow-sm md:mt-6 md:flex">
+      <Link href="/" className="text-lg font-semibold text-foreground">
+        Oblaco
       </Link>
 
       <nav className="flex items-center gap-6">
@@ -38,13 +35,13 @@ export function DesktopNav({ active, favoritesCount = 0 }: DesktopNavProps) {
                 type="button"
                 className={cn(
                   "relative flex items-center gap-1.5 text-sm font-medium transition-colors",
-                  isActive ? "text-white" : "text-white/70 hover:text-white",
+                  isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className={cn("h-4 w-4", isActive && "text-primary")} />
                 {t(item.labelKey)}
                 {item.id === "saved" && favoritesCount > 0 && (
-                  <span className="ml-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-[#2563EB]">
+                  <span className="ml-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
                     {favoritesCount}
                   </span>
                 )}

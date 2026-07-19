@@ -10,15 +10,12 @@ export default function ChatsPage() {
   const { t } = useLanguage()
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-24 md:max-w-3xl md:pb-10">
+    <div className="mx-auto min-h-screen max-w-md bg-background pb-24 md:max-w-3xl md:pb-10">
 
       <DesktopNav active="chats" />
 
-      <div
-        className="px-4 pt-12 pb-6 rounded-b-3xl shadow-lg md:rounded-2xl md:mt-4 md:px-6 md:py-6"
-        style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-      >
-        <span className="text-white font-bold text-lg">{t("chats")}</span>
+      <div className="px-4 pt-12 pb-6 border-b border-border/60 bg-card shadow-sm md:rounded-2xl md:border md:mt-4 md:px-6 md:py-6">
+        <span className="text-foreground font-semibold text-lg">{t("chats")}</span>
       </div>
 
       <div className="mx-4 mt-4 space-y-2 md:mx-0 md:mt-6">

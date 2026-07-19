@@ -29,16 +29,10 @@ export function MarketplaceHeader({
 }: MarketplaceHeaderProps) {
   const { t } = useLanguage()
   return (
-    <header
-      className="rounded-b-3xl px-5 pb-6 pt-7 text-white shadow-lg md:rounded-2xl md:px-8 md:py-5"
-      style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-    >
+    <header className="border-b border-border/60 bg-card px-5 pb-4 pt-6 md:rounded-2xl md:border md:px-8 md:py-4 md:shadow-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
         <div className="flex items-center gap-10">
-          <div>
-            <p className="hidden text-xs font-medium text-white/70 md:block">Your home under the same sky</p>
-            <h1 className="text-2xl font-black tracking-widest text-white drop-shadow-lg md:text-xl">OBLACO</h1>
-          </div>
+          <h1 className="text-xl font-semibold text-foreground md:text-lg">Oblaco</h1>
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-6 md:flex">
@@ -52,13 +46,13 @@ export function MarketplaceHeader({
                     onClick={() => onNavSelect?.(item.id)}
                     className={cn(
                       "relative flex items-center gap-1.5 text-sm font-medium transition-colors",
-                      isActive ? "text-white" : "text-white/70 hover:text-white",
+                      isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                     )}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className={cn("h-4 w-4", isActive && "text-primary")} />
                     {item.id === "home" ? t("home") : item.id === "saved" ? t("saved") : item.id === "chats" ? t("chats") : t("profile")}
                     {item.id === "saved" && favoritesCount > 0 && (
-                      <span className="ml-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-[#2563EB]">
+                      <span className="ml-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
                         {favoritesCount}
                       </span>
                     )}
@@ -70,21 +64,21 @@ export function MarketplaceHeader({
         </div>
 
         <div className="hidden items-center gap-3 md:flex md:flex-1 md:max-w-md">
-          <div className="flex flex-1 items-center gap-2.5 rounded-2xl bg-white/15 px-4 py-2.5 backdrop-blur-sm">
-            <Search className="h-4 w-4 shrink-0 text-white/80" />
+          <div className="flex flex-1 items-center gap-2.5 rounded-full border border-border/60 bg-background px-4 py-2.5 shadow-sm">
+            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
             <input
               type="search"
               placeholder={t("searchPlaceholder")}
               aria-label={t("searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full bg-transparent text-sm text-white placeholder:text-white/60 focus:outline-none"
+              className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
           </div>
           <Link href="/post">
             <button
               type="button"
-              className="flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2.5 text-sm font-semibold text-[#1E3A5F] shadow-md transition-transform active:scale-95"
+              className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-transform active:scale-95"
             >
               <Plus className="h-4 w-4" />
               {t("sell")}
@@ -95,30 +89,30 @@ export function MarketplaceHeader({
         <button
           type="button"
           aria-label="Notifications"
-          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm transition-transform active:scale-90 md:hidden"
+          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted transition-transform active:scale-90 md:hidden"
         >
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-white ring-2 ring-[#2563EB]" />
+          <Bell className="h-5 w-5 text-foreground" />
+          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-primary ring-2 ring-card" />
         </button>
       </div>
 
       {/* Mobile search bar */}
-      <div className="mt-5 flex items-center gap-2.5 md:hidden">
-        <div className="flex flex-1 items-center gap-2.5 rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
-          <Search className="h-5 w-5 text-white/80" />
+      <div className="mt-4 flex items-center gap-2.5 md:hidden">
+        <div className="flex flex-1 items-center gap-2.5 rounded-full border border-border/60 bg-background px-4 py-3 shadow-sm">
+          <Search className="h-5 w-5 text-muted-foreground" />
           <input
             type="search"
-            placeholder="Search marketplace"
-            aria-label="Search marketplace"
+            placeholder={t("searchPlaceholder")}
+            aria-label={t("searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full bg-transparent text-sm text-white placeholder:text-white/60 focus:outline-none"
+            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
         </div>
         <button
           type="button"
           aria-label="Filters"
-          className="flex h-[46px] w-[46px] items-center justify-center rounded-2xl bg-white text-[#1E3A5F] shadow-md transition-transform active:scale-90"
+          className="flex h-[46px] w-[46px] items-center justify-center rounded-full border border-border/60 bg-background text-foreground shadow-sm transition-transform active:scale-90"
         >
           <SlidersHorizontal className="h-5 w-5" />
         </button>

@@ -144,7 +144,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-5xl">
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-5xl">
         <DesktopNav active="profile" />
         <div className="flex flex-1 items-center justify-center">
           <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
@@ -155,14 +155,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-[#F0F7FF] pb-24 md:max-w-5xl md:pb-10">
+    <div className="mx-auto min-h-screen max-w-md bg-background pb-24 md:max-w-5xl md:pb-10">
 
       <DesktopNav active="profile" />
 
-      <div
-        className="px-4 pt-12 pb-8 flex flex-col items-center rounded-b-3xl shadow-lg md:rounded-2xl md:mt-4 md:pt-6"
-        style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-      >
+      <div className="px-4 pt-12 pb-8 flex flex-col items-center border-b border-border/60 bg-card shadow-sm md:rounded-2xl md:border md:mt-4 md:pt-6">
         <div className="w-full flex justify-between mb-4">
           {editing ? (
             <button
@@ -173,7 +170,7 @@ export default function ProfilePage() {
                 setNameInput(profile?.name ?? "")
                 setLocationInput(profile?.location ?? "")
               }}
-              className="text-xs font-semibold text-white/80"
+              className="text-xs font-semibold text-muted-foreground"
             >
               {t("cancel")}
             </button>
@@ -185,14 +182,14 @@ export default function ProfilePage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-[#2563EB] disabled:opacity-60"
+              className="rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-60"
             >
               {saving ? t("saving") : t("save")}
             </button>
           ) : (
             <button
               onClick={() => setEditing(true)}
-              className="rounded-full bg-white/20 px-4 py-1.5 text-xs font-semibold text-white"
+              className="rounded-full bg-muted px-4 py-1.5 text-xs font-semibold text-foreground"
             >
               {t("editProfile")}
             </button>
@@ -200,7 +197,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="relative mb-3">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-white font-black text-3xl shadow-lg overflow-hidden">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-white font-semibold text-3xl shadow-sm overflow-hidden">
             {displayAvatar ? (
               <img src={displayAvatar} alt={displayName} className="h-full w-full object-cover" />
             ) : (
@@ -218,9 +215,9 @@ export default function ProfilePage() {
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md"
+                className="absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full bg-card shadow-sm border border-border/60"
               >
-                <Camera className="h-3.5 w-3.5 text-[#2563EB]" />
+                <Camera className="h-3.5 w-3.5 text-primary" />
               </button>
             </>
           )}
@@ -232,10 +229,10 @@ export default function ProfilePage() {
             value={nameInput}
             onChange={(e) => setNameInput(e.target.value)}
             placeholder={t("yourName")}
-            className="w-full max-w-xs rounded-xl bg-white/20 px-3 py-2 text-center text-white placeholder:text-white/60 outline-none font-bold text-xl"
+            className="w-full max-w-xs rounded-xl bg-muted px-3 py-2 text-center text-foreground placeholder:text-muted-foreground outline-none font-semibold text-xl"
           />
         ) : (
-          <h1 className="text-white font-bold text-xl">{displayName}</h1>
+          <h1 className="text-foreground font-semibold text-xl">{displayName}</h1>
         )}
 
         {editing ? (
@@ -244,22 +241,22 @@ export default function ProfilePage() {
             value={locationInput}
             onChange={(e) => setLocationInput(e.target.value)}
             placeholder={t("yourLocation")}
-            className="mt-2 w-full max-w-xs rounded-xl bg-white/20 px-3 py-1.5 text-center text-xs text-white placeholder:text-white/60 outline-none"
+            className="mt-2 w-full max-w-xs rounded-xl bg-muted px-3 py-1.5 text-center text-xs text-foreground placeholder:text-muted-foreground outline-none"
           />
         ) : (
-          <p className="text-white/60 text-xs mt-1">📍 {displayLocation}</p>
+          <p className="text-muted-foreground text-xs mt-1">📍 {displayLocation}</p>
         )}
 
-        <div className="mt-2 flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
-          <Shield className="w-3 h-3 text-green-300" />
-          <span className="text-green-300 text-xs font-semibold">{t("verifiedMember")}</span>
+        <div className="mt-2 flex items-center gap-1 bg-green-50 px-3 py-1 rounded-full">
+          <Shield className="w-3 h-3 text-green-600" />
+          <span className="text-green-600 text-xs font-semibold">{t("verifiedMember")}</span>
         </div>
 
         <div className="mt-5 w-full grid grid-cols-3 gap-2 md:max-w-md">
           {stats.map((stat) => (
-            <div key={stat.label} className="bg-white/20 rounded-2xl py-3 flex flex-col items-center">
-              <span className="text-white font-black text-lg">{stat.value}</span>
-              <span className="text-white/60 text-xs">{stat.label}</span>
+            <div key={stat.label} className="bg-muted rounded-2xl py-3 flex flex-col items-center">
+              <span className="text-foreground font-semibold text-lg">{stat.value}</span>
+              <span className="text-muted-foreground text-xs">{stat.label}</span>
             </div>
           ))}
         </div>
@@ -281,7 +278,7 @@ export default function ProfilePage() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
                     language === lang.code
                       ? "bg-[#2563EB] text-white"
-                      : "bg-[#F0F7FF] text-gray-500"
+                      : "bg-muted text-gray-500"
                   }`}
                 >
                   <span>{lang.flag}</span>
@@ -313,11 +310,11 @@ export default function ProfilePage() {
               <button
                 key={item.label}
                 onClick={() => router.push(item.href)}
-                className={`w-full flex items-center gap-3 px-4 py-4 hover:bg-[#F0F7FF] transition-all ${
+                className={`w-full flex items-center gap-3 px-4 py-4 hover:bg-muted transition-all ${
                   index < menuItems.length - 1 ? "border-b border-gray-50" : ""
                 }`}
               >
-                <div className="w-9 h-9 rounded-xl bg-[#F0F7FF] flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center flex-shrink-0">
                   <item.icon className="w-4 h-4 text-[#2563EB]" />
                 </div>
                 <div className="flex-1 text-left">

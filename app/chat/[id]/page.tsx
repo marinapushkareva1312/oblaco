@@ -48,7 +48,7 @@ export default function ChatThreadPage() {
 
   if (!conversation) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-3xl">
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-3xl">
         <DesktopNav active="chats" />
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
           <p className="text-lg font-bold text-[#1A1A2A]">{t("chatNotFound")}</p>
@@ -65,35 +65,32 @@ export default function ChatThreadPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-3xl">
+    <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-3xl">
 
       <DesktopNav active="chats" />
 
       <div className="flex flex-1 flex-col md:my-6 md:min-h-[85vh] md:rounded-3xl md:shadow-xl md:overflow-hidden">
 
-      <div
-        className="px-4 pt-12 pb-4 flex items-center gap-3 rounded-b-3xl shadow-lg md:rounded-none md:pt-6"
-        style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
-      >
+      <div className="px-4 pt-12 pb-4 flex items-center gap-3 border-b border-border/60 bg-card shadow-sm md:rounded-none md:pt-6">
         <button
           onClick={() => router.push("/chats")}
-          className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0"
+          className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0"
         >
-          <ArrowLeft className="w-5 h-5 text-white" />
+          <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
           {conversation.sellerInitial}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-white font-bold text-sm truncate">{conversation.sellerName}</p>
-          <p className="text-white/60 text-xs truncate">
+          <p className="text-foreground font-semibold text-sm truncate">{conversation.sellerName}</p>
+          <p className="text-muted-foreground text-xs truncate">
             {conversation.listingTitle} · {conversation.listingPrice}
           </p>
         </div>
         <button
           onClick={() => setTranslateAll(!translateAll)}
           className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all flex-shrink-0 ${
-            translateAll ? "bg-white text-[#2563EB]" : "bg-white/20 text-white"
+            translateAll ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
           }`}
         >
           <Globe className="w-3 h-3" />
@@ -146,10 +143,10 @@ export default function ChatThreadPage() {
 
       <div className="px-4 pb-8 pt-2 bg-white border-t border-gray-100 md:px-8 md:pb-4">
         <div className="flex items-center gap-2">
-          <button className="w-10 h-10 rounded-full bg-[#F0F7FF] flex items-center justify-center flex-shrink-0">
+          <button className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
             <Mic className="w-5 h-5 text-[#2563EB]" />
           </button>
-          <div className="flex-1 bg-[#F0F7FF] rounded-2xl px-4 py-3 flex items-center">
+          <div className="flex-1 bg-muted rounded-2xl px-4 py-3 flex items-center">
             <input
               type="text"
               placeholder={t("messagePlaceholder")}
@@ -161,10 +158,9 @@ export default function ChatThreadPage() {
           </div>
           <button
             onClick={sendMessage}
-            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
+            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-primary"
           >
-            <Send className="w-4 h-4 text-white" />
+            <Send className="w-4 h-4 text-primary-foreground" />
           </button>
         </div>
       </div>
