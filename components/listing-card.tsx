@@ -39,7 +39,7 @@ export function ListingCard({ listing, isFavorite, onToggleFavorite }: ListingCa
               }}
               aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
               aria-pressed={isFavorite}
-              className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground shadow-md backdrop-blur-sm transition-transform active:scale-90"
+              className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-card/90 text-foreground shadow-md backdrop-blur-sm transition-transform active:scale-90"
             >
               <Heart
                 className={cn(
