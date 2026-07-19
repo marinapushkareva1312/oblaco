@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { ArrowLeft, Camera, Mic, Sparkles, MapPin, Tag, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
@@ -20,8 +20,18 @@ export default function PostListing() {
   const [errorMsg, setErrorMsg] = useState("")
   const [photoFile, setPhotoFile] = useState<File | null>(null)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [isRecording, setIsRecording] = useState(false)
+  const [polishing, setPolishing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const recognitionRef = useRef<any>(null)
+  const transcriptRef = useRef("")
   const router = useRouter()
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.stop()
+    }
+  }, [])
 
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -63,6 +73,84 @@ export default function PostListing() {
     } finally {
       setAiLoading(false)
     }
+  }
+
+  const polishVoiceDescription = async (rawText: string) => {
+    setPolishing(true)
+    setErrorMsg("")
+
+    try {
+      const response = await fetch("/api/polish-description", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rawText }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.description) {
+        throw new Error(data.error || "Failed to polish description")
+      }
+
+      setDescription(data.description)
+    } catch (error) {
+      console.error("Ошибка обработки голосового описания:", error)
+      setErrorMsg(t("errorPolishingDescription"))
+    } finally {
+      setPolishing(false)
+    }
+  }
+
+  const toggleVoiceRecording = () => {
+    if (isRecording) {
+      recognitionRef.current?.stop()
+      return
+    }
+
+    const SpeechRecognitionCtor =
+      typeof window !== "undefined" &&
+      ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
+
+    if (!SpeechRecognitionCtor) {
+      setErrorMsg(t("voiceNotSupported"))
+      return
+    }
+
+    setErrorMsg("")
+    transcriptRef.current = ""
+
+    const recognition = new SpeechRecognitionCtor()
+    recognition.continuous = true
+    recognition.interimResults = true
+
+    recognition.onresult = (event: any) => {
+      let finalText = ""
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          finalText += event.results[i][0].transcript
+        }
+      }
+      if (finalText.trim()) {
+        transcriptRef.current = `${transcriptRef.current} ${finalText.trim()}`.trim()
+      }
+    }
+
+    recognition.onerror = (event: any) => {
+      console.error("Ошибка распознавания речи:", event.error)
+      setIsRecording(false)
+    }
+
+    recognition.onend = () => {
+      setIsRecording(false)
+      const text = transcriptRef.current.trim()
+      if (text) {
+        polishVoiceDescription(text)
+      }
+    }
+
+    recognitionRef.current = recognition
+    recognition.start()
+    setIsRecording(true)
   }
 
   const categories = [
@@ -321,15 +409,28 @@ export default function PostListing() {
             />
           </div>
 
-          <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-2xl p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#2563EB] flex items-center justify-center flex-shrink-0">
+          <button
+            type="button"
+            onClick={toggleVoiceRecording}
+            disabled={polishing}
+            className={`w-full text-left rounded-2xl border p-4 flex items-center gap-3 transition-colors disabled:opacity-60 ${
+              isRecording ? "bg-red-50 border-red-200" : "bg-[#EFF6FF] border-[#BFDBFE]"
+            }`}
+          >
+            <div
+              className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                isRecording ? "bg-red-500 animate-pulse" : "bg-[#2563EB]"
+              }`}
+            >
               <Mic className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-[#2563EB]">{t("voiceDescription")}</p>
+              <p className={`text-xs font-semibold ${isRecording ? "text-red-500" : "text-[#2563EB]"}`}>
+                {polishing ? t("polishingDescription") : isRecording ? t("recordingTapToStop") : t("voiceDescription")}
+              </p>
               <p className="text-xs text-gray-400 mt-0.5">{t("voiceHint")}</p>
             </div>
-          </div>
+          </button>
 
           {errorMsg && (
             <div className="bg-red-50 border border-red-200 rounded-2xl p-3 text-sm text-red-600 text-center">

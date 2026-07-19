@@ -92,6 +92,10 @@ export const translations = {
     sortPriceLowHigh: "Price: Low to High",
     sortPriceHighLow: "Price: High to Low",
     errorGeneratingDescription: "Couldn't generate a description. Please try again or write your own.",
+    recordingTapToStop: "Recording... tap to stop",
+    polishingDescription: "Polishing description...",
+    voiceNotSupported: "Voice input isn't supported in this browser",
+    errorPolishingDescription: "Couldn't process the recording. Please try again or write your own.",
   },
   ru: {
     searchPlaceholder: "Поиск по маркетплейсу",
@@ -184,6 +188,10 @@ export const translations = {
     sortPriceLowHigh: "Цена: по возрастанию",
     sortPriceHighLow: "Цена: по убыванию",
     errorGeneratingDescription: "Не удалось сгенерировать описание. Попробуйте снова или напишите его сами.",
+    recordingTapToStop: "Запись... нажмите, чтобы остановить",
+    polishingDescription: "Обработка описания...",
+    voiceNotSupported: "Голосовой ввод не поддерживается в этом браузере",
+    errorPolishingDescription: "Не удалось обработать запись. Попробуйте снова или напишите описание сами.",
   },
   ko: {
     searchPlaceholder: "마켓플레이스 검색",
@@ -276,6 +284,10 @@ export const translations = {
     sortPriceLowHigh: "가격 낮은순",
     sortPriceHighLow: "가격 높은순",
     errorGeneratingDescription: "설명을 생성하지 못했습니다. 다시 시도하거나 직접 작성해주세요.",
+    recordingTapToStop: "녹음 중... 탭하여 중지",
+    polishingDescription: "설명 다듬는 중...",
+    voiceNotSupported: "이 브라우저에서는 음성 입력이 지원되지 않습니다",
+    errorPolishingDescription: "녹음을 처리하지 못했습니다. 다시 시도하거나 직접 작성해주세요.",
   },
   zh: {
     searchPlaceholder: "搜索市场",
@@ -368,6 +380,10 @@ export const translations = {
     sortPriceLowHigh: "价格从低到高",
     sortPriceHighLow: "价格从高到低",
     errorGeneratingDescription: "无法生成描述，请重试或自行填写。",
+    recordingTapToStop: "录音中...点击停止",
+    polishingDescription: "正在润色描述...",
+    voiceNotSupported: "此浏览器不支持语音输入",
+    errorPolishingDescription: "无法处理录音，请重试或自行填写。",
   },
   vi: {
     searchPlaceholder: "Tìm kiếm trên chợ",
@@ -460,6 +476,10 @@ export const translations = {
     sortPriceLowHigh: "Giá: Thấp đến cao",
     sortPriceHighLow: "Giá: Cao đến thấp",
     errorGeneratingDescription: "Không thể tạo mô tả. Vui lòng thử lại hoặc tự viết mô tả.",
+    recordingTapToStop: "Đang ghi âm... nhấn để dừng",
+    polishingDescription: "Đang chỉnh sửa mô tả...",
+    voiceNotSupported: "Trình duyệt này không hỗ trợ nhập giọng nói",
+    errorPolishingDescription: "Không thể xử lý bản ghi âm. Vui lòng thử lại hoặc tự viết mô tả.",
   },
 }
 
