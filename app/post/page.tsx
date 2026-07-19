@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
 import { BottomNav } from "@/components/bottom-nav"
 import { DesktopNav } from "@/components/desktop-nav"
+import { AppShell } from "@/components/app-shell"
 
 export default function PostListing() {
   const { t } = useLanguage()
@@ -244,7 +245,7 @@ export default function PostListing() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-background pb-56 md:max-w-5xl md:pb-10">
+    <AppShell className="pb-56 md:pb-10">
 
       <DesktopNav active="" />
 
@@ -458,6 +459,6 @@ export default function PostListing() {
 
       <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
 
-    </div>
+    </AppShell>
   )
 }

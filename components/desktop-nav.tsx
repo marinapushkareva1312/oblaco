@@ -21,7 +21,7 @@ type DesktopNavProps = {
 export function DesktopNav({ active, favoritesCount = 0 }: DesktopNavProps) {
   const { t } = useLanguage()
   return (
-    <div className="hidden items-center justify-between rounded-2xl border border-border/60 bg-card px-6 py-4 shadow-sm md:mt-6 md:flex">
+    <div className="hidden items-center justify-between rounded-2xl border border-border/60 bg-card px-8 py-4 shadow-sm md:flex">
       <Link href="/" className="flex items-center gap-1.5">
         <CloudLogo className="h-[18px] w-[18px] shrink-0" />
         <span className="text-lg font-semibold text-foreground">Oblaco</span>

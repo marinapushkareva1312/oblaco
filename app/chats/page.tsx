@@ -5,12 +5,13 @@ import { useLanguage } from "@/lib/language-context"
 import { conversations } from "@/lib/chats"
 import { BottomNav } from "@/components/bottom-nav"
 import { DesktopNav } from "@/components/desktop-nav"
+import { AppShell } from "@/components/app-shell"
 
 export default function ChatsPage() {
   const { t } = useLanguage()
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-background pb-24 md:max-w-3xl md:pb-10">
+    <AppShell className="pb-24 md:pb-10">
 
       <DesktopNav active="chats" />
 
@@ -47,6 +48,6 @@ export default function ChatsPage() {
 
       <BottomNav active="chats" onSelect={() => {}} favoritesCount={0} />
 
-    </div>
+    </AppShell>
   )
 }

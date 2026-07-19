@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation"
 import { useLanguage } from "@/lib/language-context"
 import { BottomNav } from "@/components/bottom-nav"
 import { DesktopNav } from "@/components/desktop-nav"
+import { AppShell } from "@/components/app-shell"
 import { getConversation, type ChatMessage } from "@/lib/chats"
 
 export default function ChatThreadPage() {
@@ -48,7 +49,7 @@ export default function ChatThreadPage() {
 
   if (!conversation) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-3xl">
+      <AppShell className="flex flex-col">
         <DesktopNav active="chats" />
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
           <p className="text-lg font-bold text-[#1A1A2A]">{t("chatNotFound")}</p>
@@ -60,16 +61,16 @@ export default function ChatThreadPage() {
           </button>
         </div>
         <BottomNav active="chats" onSelect={() => {}} favoritesCount={0} />
-      </div>
+      </AppShell>
     )
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-3xl">
+    <AppShell className="flex flex-col">
 
       <DesktopNav active="chats" />
 
-      <div className="flex flex-1 flex-col md:my-6 md:min-h-[85vh] md:rounded-3xl md:shadow-xl md:overflow-hidden">
+      <div className="flex flex-1 flex-col md:my-6 md:mx-auto md:w-full md:max-w-3xl md:min-h-[85vh] md:rounded-3xl md:shadow-xl md:overflow-hidden">
 
       <div className="px-4 pt-12 pb-4 flex items-center gap-3 border-b border-border/60 bg-card shadow-sm md:rounded-none md:pt-6">
         <button
@@ -170,6 +171,6 @@ export default function ChatThreadPage() {
       <div className="h-24 md:hidden" />
       <BottomNav active="chats" onSelect={() => {}} favoritesCount={0} />
 
-    </div>
+    </AppShell>
   )
 }

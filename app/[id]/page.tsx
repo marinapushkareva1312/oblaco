@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase"
 import { useLanguage } from "@/lib/language-context"
 import { BottomNav } from "@/components/bottom-nav"
 import { DesktopNav } from "@/components/desktop-nav"
+import { AppShell } from "@/components/app-shell"
 
 type Listing = {
   id: string
@@ -51,19 +52,19 @@ export default function ListingDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-5xl">
+      <AppShell className="flex flex-col">
         <DesktopNav active="" />
         <div className="flex flex-1 items-center justify-center">
           <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
         </div>
         <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
-      </div>
+      </AppShell>
     )
   }
 
   if (!listing) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-5xl">
+      <AppShell className="flex flex-col">
         <DesktopNav active="" />
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
           <p className="text-lg font-bold text-[#1A1A2A]">{t("listingNotFound")}</p>
@@ -75,14 +76,14 @@ export default function ListingDetail() {
           </button>
         </div>
         <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
-      </div>
+      </AppShell>
     )
   }
 
   const timeAgo = new Date(listing.created_at).toLocaleDateString()
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-background pb-48 md:max-w-5xl md:pb-10">
+    <AppShell className="pb-48 md:pb-10">
 
       <DesktopNav active="" />
 
@@ -193,6 +194,6 @@ export default function ListingDetail() {
 
       <BottomNav active="" onSelect={() => {}} favoritesCount={0} />
 
-    </div>
+    </AppShell>
   )
 }

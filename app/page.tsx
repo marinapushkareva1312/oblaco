@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from "react"
 import { ArrowUp, ChevronDown } from "lucide-react"
 import { MarketplaceHeader } from "@/components/marketplace-header"
+import { AppShell } from "@/components/app-shell"
 import { CategoryScroll } from "@/components/category-scroll"
 import { ListingCard } from "@/components/listing-card"
 import { BottomNav } from "@/components/bottom-nav"
@@ -96,7 +97,7 @@ export default function Page() {
   }, [activeCategory, activeNav, favorites, allListings, searchResults, sortBy])
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-background pb-24 md:max-w-6xl md:pb-10">
+    <AppShell className="pb-24 md:pb-10">
       <MarketplaceHeader
   searchQuery={searchQuery}
   onSearchChange={setSearchQuery}
@@ -180,6 +181,6 @@ export default function Page() {
           <ArrowUp className="h-5 w-5" />
         </button>
       )}
-    </div>
+    </AppShell>
   )
 }

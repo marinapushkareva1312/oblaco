@@ -8,6 +8,7 @@ import { useLanguage } from "@/lib/language-context"
 import type { Language } from "@/lib/translations"
 import { BottomNav } from "@/components/bottom-nav"
 import { DesktopNav } from "@/components/desktop-nav"
+import { AppShell } from "@/components/app-shell"
 
 type Profile = {
   id: string
@@ -144,18 +145,18 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background md:max-w-5xl">
+      <AppShell className="flex flex-col">
         <DesktopNav active="profile" />
         <div className="flex flex-1 items-center justify-center">
           <div className="w-8 h-8 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin" />
         </div>
         <BottomNav active="profile" onSelect={() => {}} favoritesCount={0} />
-      </div>
+      </AppShell>
     )
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md bg-background pb-24 md:max-w-5xl md:pb-10">
+    <AppShell className="pb-24 md:pb-10">
 
       <DesktopNav active="profile" />
 
@@ -343,6 +344,6 @@ export default function ProfilePage() {
 
       <BottomNav active="profile" onSelect={() => {}} favoritesCount={0} />
 
-    </div>
+    </AppShell>
   )
 }
