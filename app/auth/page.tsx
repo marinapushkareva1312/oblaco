@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Mail, Lock, User, Eye, EyeOff, Globe } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import { CloudLogo } from "@/components/cloud-logo"
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -61,7 +62,10 @@ export default function AuthPage() {
 
       {/* Top section */}
       <div className="px-6 pt-16 pb-10 flex flex-col items-center border-b border-border/60 bg-card">
-        <span className="text-foreground font-semibold text-3xl">Oblaco</span>
+        <div className="flex items-center gap-2">
+          <CloudLogo className="h-7 w-7 shrink-0" />
+          <span className="text-foreground font-semibold text-3xl">Oblaco</span>
+        </div>
 
         <div className="mt-8 bg-muted rounded-2xl p-1 flex w-full">
           <button

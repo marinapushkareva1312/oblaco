@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal, Bell, Home, Heart, MessageCircle, User, Plus
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/language-context"
+import { CloudLogo } from "@/components/cloud-logo"
 
 interface MarketplaceHeaderProps {
   searchQuery: string
@@ -32,7 +33,10 @@ export function MarketplaceHeader({
     <header className="border-b border-border/60 bg-card px-5 pb-4 pt-6 md:rounded-2xl md:border md:px-8 md:py-4 md:shadow-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
         <div className="flex items-center gap-10">
-          <h1 className="text-xl font-semibold text-foreground md:text-lg">Oblaco</h1>
+          <Link href="/" className="flex items-center gap-1.5">
+            <CloudLogo className="h-5 w-5 shrink-0" />
+            <h1 className="text-xl font-semibold text-foreground md:text-lg">Oblaco</h1>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-6 md:flex">
