@@ -8,24 +8,24 @@ OBLACO is a Next.js 16 (App Router) marketplace web app (list/buy/sell items, ch
 
 ## Commands
 
-Package manager: **pnpm** (`pnpm-workspace.yaml` / `pnpm-lock.yaml` are authoritative; an untracked `package-lock.json` also exists but is not the one to update — use `pnpm install`/`pnpm add` when changing dependencies).
+Package manager: **npm** (`package-lock.json` is authoritative — use `npm install`/`npm install <pkg>` when changing dependencies). The project previously had a stray `pnpm-lock.yaml`/`pnpm-workspace.yaml` left over from earlier work; those were removed because the coexisting lockfiles confused Next.js's workspace-root inference (`next dev` would warn/error that it couldn't find `next/package.json` from the project directory). Don't reintroduce a pnpm lockfile here.
 
 ```
-pnpm dev        # start dev server (next dev)
-pnpm build      # production build (next build)
-pnpm start      # run production build
-pnpm lint       # eslint .
+npm run dev     # start dev server (next dev)
+npm run build   # production build (next build)
+npm run start   # run production build
+npm run lint    # eslint .
 ```
 
 There is no test suite/framework configured in this repo.
 
 To backfill embeddings for listings missing them (run manually, not part of any build step):
 ```
-pnpm exec ts-node generateEmbeddings.ts
+npx ts-node generateEmbeddings.ts
 ```
 This loads `.env.local` via `dotenv` and requires `SUPABASE_SERVICE_ROLE_KEY` + `VOYAGE_API_KEY`.
 
-`next.config.mjs` sets `typescript.ignoreBuildErrors: true` — `pnpm build` will succeed even with type errors, so don't rely on a successful build as proof of type correctness; check `tsc`/editor diagnostics separately when it matters.
+`next.config.mjs` sets `typescript.ignoreBuildErrors: true` — `npm run build` will succeed even with type errors, so don't rely on a successful build as proof of type correctness; check `tsc`/editor diagnostics separately when it matters.
 
 ## Environment variables
 
