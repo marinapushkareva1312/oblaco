@@ -39,12 +39,30 @@ export default function PostListing() {
   const generateAIDescription = async () => {
     if (!title) return
     setAiLoading(true)
-    setTimeout(() => {
-      setDescription(
-        `Selling ${title} in great condition. Used carefully, no major scratches or damage. Perfect for anyone looking for a quality item at a reasonable price. Pickup available in ${location || "Busan"} area. Feel free to message me with any questions!`
-      )
+    setErrorMsg("")
+
+    try {
+      const categoryLabel = categories.find((c) => c.id === category)?.label
+
+      const response = await fetch("/api/generate-description", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, category: categoryLabel, location }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.description) {
+        throw new Error(data.error || "Failed to generate description")
+      }
+
+      setDescription(data.description)
+    } catch (error) {
+      console.error("Ошибка генерации AI-описания:", error)
+      setErrorMsg(t("errorGeneratingDescription"))
+    } finally {
       setAiLoading(false)
-    }, 1500)
+    }
   }
 
   const categories = [

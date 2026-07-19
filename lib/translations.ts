@@ -91,6 +91,7 @@ export const translations = {
     sortNewest: "Newest first",
     sortPriceLowHigh: "Price: Low to High",
     sortPriceHighLow: "Price: High to Low",
+    errorGeneratingDescription: "Couldn't generate a description. Please try again or write your own.",
   },
   ru: {
     searchPlaceholder: "Поиск по маркетплейсу",
@@ -182,6 +183,7 @@ export const translations = {
     sortNewest: "Сначала новые",
     sortPriceLowHigh: "Цена: по возрастанию",
     sortPriceHighLow: "Цена: по убыванию",
+    errorGeneratingDescription: "Не удалось сгенерировать описание. Попробуйте снова или напишите его сами.",
   },
   ko: {
     searchPlaceholder: "마켓플레이스 검색",
@@ -273,6 +275,7 @@ export const translations = {
     sortNewest: "최신순",
     sortPriceLowHigh: "가격 낮은순",
     sortPriceHighLow: "가격 높은순",
+    errorGeneratingDescription: "설명을 생성하지 못했습니다. 다시 시도하거나 직접 작성해주세요.",
   },
   zh: {
     searchPlaceholder: "搜索市场",
@@ -364,6 +367,7 @@ export const translations = {
     sortNewest: "最新发布",
     sortPriceLowHigh: "价格从低到高",
     sortPriceHighLow: "价格从高到低",
+    errorGeneratingDescription: "无法生成描述，请重试或自行填写。",
   },
   vi: {
     searchPlaceholder: "Tìm kiếm trên chợ",
@@ -455,6 +459,7 @@ export const translations = {
     sortNewest: "Mới nhất",
     sortPriceLowHigh: "Giá: Thấp đến cao",
     sortPriceHighLow: "Giá: Cao đến thấp",
+    errorGeneratingDescription: "Không thể tạo mô tả. Vui lòng thử lại hoặc tự viết mô tả.",
   },
 }
 
