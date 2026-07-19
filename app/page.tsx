@@ -1,14 +1,18 @@
 "use client"
 
 import { useMemo, useState, useEffect } from "react"
+import { ArrowUp, ChevronDown } from "lucide-react"
 import { MarketplaceHeader } from "@/components/marketplace-header"
 import { CategoryScroll } from "@/components/category-scroll"
 import { ListingCard } from "@/components/listing-card"
 import { BottomNav } from "@/components/bottom-nav"
-import { listings as staticListings, fetchListings } from "@/lib/listings"
+import { listings as staticListings, fetchListings, getPriceValue } from "@/lib/listings"
 import type { Listing } from "@/lib/listings"
 import { searchListings } from "@/lib/embeddings"
 import { useLanguage } from "@/lib/language-context"
+
+type SortOption = "newest" | "price-asc" | "price-desc"
+
 export default function Page() {
   const { t } = useLanguage()
   const [activeCategory, setActiveCategory] = useState("all")
@@ -19,6 +23,8 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState<Listing[] | null>(null)
   const [searching, setSearching] = useState(false)
+  const [sortBy, setSortBy] = useState<SortOption>("newest")
+  const [showBackToTop, setShowBackToTop] = useState(false)
 
   useEffect(() => {
     const loadListings = async () => {
@@ -51,24 +57,43 @@ export default function Page() {
     return () => clearTimeout(timeout)
   }, [searchQuery])
 
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 400)
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]))
   }
 
   const visibleListings = useMemo(() => {
+    let list: Listing[]
+
     if (searchResults !== null) {
-      return searchResults
+      list = searchResults
+    } else {
+      list = allListings
+      if (activeCategory !== "all") {
+        list = list.filter((l) => l.category === activeCategory)
+      }
+      if (activeNav === "saved") {
+        list = list.filter((l) => favorites.includes(l.id))
+      }
     }
 
-    let list = allListings
-    if (activeCategory !== "all") {
-      list = list.filter((l) => l.category === activeCategory)
+    if (sortBy === "price-asc") {
+      list = [...list].sort((a, b) => getPriceValue(a.price) - getPriceValue(b.price))
+    } else if (sortBy === "price-desc") {
+      list = [...list].sort((a, b) => getPriceValue(b.price) - getPriceValue(a.price))
     }
-    if (activeNav === "saved") {
-      list = list.filter((l) => favorites.includes(l.id))
-    }
+
     return list
-  }, [activeCategory, activeNav, favorites, allListings, searchResults])
+  }, [activeCategory, activeNav, favorites, allListings, searchResults, sortBy])
 
   return (
     <div className="mx-auto min-h-screen max-w-md bg-background pb-24 md:max-w-6xl md:pb-10">
@@ -83,7 +108,7 @@ export default function Page() {
       <div className="px-5 pt-5">
         <CategoryScroll active={activeCategory} onSelect={setActiveCategory} />
 
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-6">
           <h2 className="text-lg font-bold text-foreground">
   {searchResults !== null
     ? t("searchResults")
@@ -91,9 +116,24 @@ export default function Page() {
     ? t("savedItems")
     : t("recentListings")}
 </h2>
-          <span className="text-xs font-medium text-muted-foreground">
+          <div className="mt-1 flex items-center justify-between gap-2">
+            <span className="text-xs font-medium text-muted-foreground">
   {loading || searching ? t("loading") : `${visibleListings.length} ${t("results")}`}
 </span>
+            <div className="relative shrink-0">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                aria-label={t("sortBy")}
+                className="appearance-none rounded-full border border-border/60 bg-card py-1.5 pl-3 pr-7 text-xs font-medium text-foreground shadow-sm outline-none"
+              >
+                <option value="newest">{t("sortNewest")}</option>
+                <option value="price-asc">{t("sortPriceLowHigh")}</option>
+                <option value="price-desc">{t("sortPriceHighLow")}</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            </div>
+          </div>
         </div>
 
         {loading || searching ? (
@@ -129,6 +169,17 @@ export default function Page() {
       </div>
 
       <BottomNav active={activeNav} onSelect={setActiveNav} favoritesCount={favorites.length} />
+
+      {showBackToTop && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          aria-label="Back to top"
+          className="fixed bottom-28 right-4 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 transition-transform active:scale-90 md:bottom-8 md:right-8"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </button>
+      )}
     </div>
   )
 }

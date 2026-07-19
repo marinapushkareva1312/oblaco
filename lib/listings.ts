@@ -12,6 +12,14 @@ export type Listing = {
   featured?: boolean
 }
 
+// Extracts a comparable numeric value from a formatted price string
+// (e.g. "₩320,000" -> 320000, "₩25,000/day" -> 25000, "Free" -> 0).
+export function getPriceValue(price: string): number {
+  const match = price.match(/[\d,]+/)
+  if (!match) return 0
+  return parseInt(match[0].replace(/,/g, ""), 10) || 0
+}
+
 export const categories: { id: string; labelKey: TranslationKey; emoji: string }[] = [
   { id: "all", labelKey: "catAll", emoji: "✨" },
   { id: "cars", labelKey: "catCars", emoji: "🚗" },
