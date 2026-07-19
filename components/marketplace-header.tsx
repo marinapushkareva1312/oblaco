@@ -16,7 +16,7 @@ interface MarketplaceHeaderProps {
 const navItems = [
   { id: "home", label: "Home", icon: Home, href: "/" },
   { id: "saved", label: "Saved", icon: Heart, href: "/" },
-  { id: "chats", label: "Chats", icon: MessageCircle, href: "/chat" },
+  { id: "chats", label: "Chats", icon: MessageCircle, href: "/chats" },
   { id: "profile", label: "Profile", icon: User, href: "/profile" },
 ]
 

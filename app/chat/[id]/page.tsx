@@ -2,49 +2,29 @@
 
 import { useState, useRef, useEffect } from "react"
 import { ArrowLeft, Send, Mic, Globe } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { useLanguage } from "@/lib/language-context"
 import { BottomNav } from "@/components/bottom-nav"
 import { DesktopNav } from "@/components/desktop-nav"
+import { getConversation, type ChatMessage } from "@/lib/chats"
 
-type Message = {
-  id: string
-  text: string
-  translated?: string
-  sender: "me" | "them"
-  time: string
-  showTranslation?: boolean
-}
-
-const initialMessages: Message[] = [
-  {
-    id: "1",
-    text: "Hi! Is the desk still available?",
-    sender: "them",
-    time: "10:30 AM",
-  },
-  {
-    id: "2",
-    text: "Yes it is! Come check it out anytime 😊",
-    sender: "me",
-    time: "10:32 AM",
-  },
-  {
-    id: "3",
-    text: "가격 조금 낮춰줄 수 있나요?",
-    translated: "Can you lower the price a little?",
-    sender: "them",
-    time: "10:33 AM",
-  },
-]
-
-export default function ChatPage() {
+export default function ChatThreadPage() {
   const { t } = useLanguage()
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
+  const router = useRouter()
+  const params = useParams()
+  const id = params.id as string
+  const conversation = getConversation(id)
+
+  const [messages, setMessages] = useState<ChatMessage[]>(conversation?.messages ?? [])
   const [input, setInput] = useState("")
   const [translateAll, setTranslateAll] = useState(true)
+  const [showTranslationFor, setShowTranslationFor] = useState<Record<string, boolean>>({})
   const bottomRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
+
+  useEffect(() => {
+    setMessages(conversation?.messages ?? [])
+    setShowTranslationFor({})
+  }, [id])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -52,7 +32,7 @@ export default function ChatPage() {
 
   const sendMessage = () => {
     if (!input.trim()) return
-    const newMsg: Message = {
+    const newMsg: ChatMessage = {
       id: Date.now().toString(),
       text: input,
       sender: "me",
@@ -62,11 +42,25 @@ export default function ChatPage() {
     setInput("")
   }
 
-  const toggleTranslation = (id: string) => {
-    setMessages((prev) =>
-      prev.map((m) =>
-        m.id === id ? { ...m, showTranslation: !m.showTranslation } : m
-      )
+  const toggleTranslation = (msgId: string) => {
+    setShowTranslationFor((prev) => ({ ...prev, [msgId]: !prev[msgId] }))
+  }
+
+  if (!conversation) {
+    return (
+      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#F0F7FF] md:max-w-3xl">
+        <DesktopNav active="chats" />
+        <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
+          <p className="text-lg font-bold text-[#1A1A2A]">{t("chatNotFound")}</p>
+          <button
+            onClick={() => router.push("/chats")}
+            className="rounded-2xl bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white"
+          >
+            {t("backToChats")}
+          </button>
+        </div>
+        <BottomNav active="chats" onSelect={() => {}} favoritesCount={0} />
+      </div>
     )
   }
 
@@ -82,21 +76,23 @@ export default function ChatPage() {
         style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
       >
         <button
-          onClick={() => router.back()}
+          onClick={() => router.push("/chats")}
           className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0"
         >
           <ArrowLeft className="w-5 h-5 text-white" />
         </button>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-300 to-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-          A
+          {conversation.sellerInitial}
         </div>
-        <div className="flex-1">
-          <p className="text-white font-bold text-sm">Anna K.</p>
-          <p className="text-white/60 text-xs">IKEA desk & chair · ₩45,000</p>
+        <div className="flex-1 min-w-0">
+          <p className="text-white font-bold text-sm truncate">{conversation.sellerName}</p>
+          <p className="text-white/60 text-xs truncate">
+            {conversation.listingTitle} · {conversation.listingPrice}
+          </p>
         </div>
         <button
           onClick={() => setTranslateAll(!translateAll)}
-          className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all flex-shrink-0 ${
             translateAll ? "bg-white text-[#2563EB]" : "bg-white/20 text-white"
           }`}
         >
@@ -133,10 +129,10 @@ export default function ChatPage() {
                   onClick={() => toggleTranslation(msg.id)}
                   className={`mt-1 text-xs underline ${msg.sender === "me" ? "text-white/60" : "text-[#2563EB]"}`}
                 >
-                  {msg.showTranslation ? t("hideTranslation") : t("translate")}
+                  {showTranslationFor[msg.id] ? t("hideTranslation") : t("translate")}
                 </button>
               )}
-              {msg.translated && !translateAll && msg.showTranslation && (
+              {msg.translated && !translateAll && showTranslationFor[msg.id] && (
                 <p className={`text-xs mt-1 leading-relaxed ${msg.sender === "me" ? "text-white/70" : "text-gray-400"}`}>
                   🌐 {msg.translated}
                 </p>

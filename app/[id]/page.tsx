@@ -175,7 +175,7 @@ export default function ListingDetail() {
           </div>
 
           <div className="hidden md:block md:mt-1">
-            <Link href="/chat">
+            <Link href="/chat/1">
               <button
                 className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
                 style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}
@@ -190,7 +190,7 @@ export default function ListingDetail() {
       </div>
 
       <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md p-4 bg-white border-t border-gray-100 md:hidden">
-        <Link href="/chat">
+        <Link href="/chat/1">
           <button
             className="w-full py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold text-base shadow-lg"
             style={{ background: "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)" }}

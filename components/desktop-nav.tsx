@@ -8,7 +8,7 @@ import { useLanguage } from "@/lib/language-context"
 const navItems = [
   { id: "home", labelKey: "home" as const, icon: Home, href: "/" },
   { id: "saved", labelKey: "saved" as const, icon: Heart, href: "/" },
-  { id: "chats", labelKey: "chats" as const, icon: MessageCircle, href: "/chat" },
+  { id: "chats", labelKey: "chats" as const, icon: MessageCircle, href: "/chats" },
   { id: "profile", labelKey: "profile" as const, icon: User, href: "/profile" },
 ]
 
