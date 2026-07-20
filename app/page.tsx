@@ -15,17 +15,20 @@ import { useLanguage } from "@/lib/language-context"
 
 type SortOption = "newest" | "price-asc" | "price-desc"
 
-export default function Page() {
-  return (
-    <Suspense fallback={null}>
-      <HomeContent />
-    </Suspense>
-  )
+function SavedTabFromQuery({ onSaved }: { onSaved: () => void }) {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    if (searchParams.get("tab") === "saved") {
+      onSaved()
+    }
+  }, [searchParams, onSaved])
+
+  return null
 }
 
-function HomeContent() {
+export default function Page() {
   const { t } = useLanguage()
-  const searchParams = useSearchParams()
   const [activeCategory, setActiveCategory] = useState("all")
   const [activeNav, setActiveNav] = useState("home")
   const [favorites, setFavorites] = useState<string[]>(["1"])
@@ -36,12 +39,6 @@ function HomeContent() {
   const [searching, setSearching] = useState(false)
   const [sortBy, setSortBy] = useState<SortOption>("newest")
   const [showBackToTop, setShowBackToTop] = useState(false)
-
-  useEffect(() => {
-    if (searchParams.get("tab") === "saved") {
-      setActiveNav("saved")
-    }
-  }, [searchParams])
 
   useEffect(() => {
     const loadListings = async () => {
@@ -114,6 +111,10 @@ function HomeContent() {
 
   return (
     <AppShell className="pb-24 md:pb-10">
+      <Suspense fallback={null}>
+        <SavedTabFromQuery onSaved={() => setActiveNav("saved")} />
+      </Suspense>
+
       <MarketplaceHeader
   searchQuery={searchQuery}
   onSearchChange={setSearchQuery}
